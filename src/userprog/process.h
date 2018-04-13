@@ -8,4 +8,8 @@ int process_wait (tid_t);
 void process_exit (void);
 void process_activate (void);
 
+/* Used for setup_stack. */
+#define WORD_SIZE 4
+#define MAX_SIZE 4096
+
 #endif /* userprog/process.h */
