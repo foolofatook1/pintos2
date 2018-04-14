@@ -31,21 +31,6 @@ process_execute (const char *file_name)
 	char *fn_copy;
 	tid_t tid;
 
-
-	char *token, *save_ptr;
-	int argc = 0;
-	char *argv[MAX_SIZE];
-
-	 /*Parse command into argv[]. 
-	for(token = strtok_r(file_name, " ", &save_ptr); token != NULL;
-		token = strtok_r(NULL, " ", &save_ptr))
-	{
-		printf("\'%s\'\n", argv[argc++] = token);
-	}*/
-
-	/*char *save_ptr;
-	file_name = strtok_r(file_name, " ", &save_ptr);*/
-
 	/* Make a copy of FILE_NAME.
 	   Otherwise there's a race between the caller and load(). */
 	fn_copy = palloc_get_page (0);
@@ -70,8 +55,8 @@ start_process (void *file_name_)
 	bool success;
 
 	/* Get actual file name. */
-/*	char *save_ptr;
-	file_name = strtok_r(file_name, " ", &save_ptr);*/
+	/*	char *save_ptr;
+		file_name = strtok_r(file_name, " ", &save_ptr);*/
 
 	/* Initialize interrupt frame and load executable. */
 	memset (&if_, 0, sizeof if_);
@@ -215,7 +200,7 @@ struct Elf32_Phdr
 #define PF_R 4          /* Readable. */
 
 
-static bool setup_stack (void **esp, char **argv);
+static bool setup_stack (void **esp, char **argv, int argc);
 static bool validate_segment (const struct Elf32_Phdr *, struct file *);
 static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		uint32_t read_bytes, uint32_t zero_bytes,
@@ -237,13 +222,16 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
 	char *token, *save_ptr;
 	int argc = 0;
-	char *argv[MAX_SIZE];
+	char **argv;//[MAX_SIZE];
+	/* this will need to be changed. */
+	argv = malloc(sizeof(char *)*4); 
 
 	/* Parse command into argv[]. */
-	for(token = strtok_r(file_name, " ", &save_ptr); token != NULL;
-		token = strtok_r(NULL, " ", &save_ptr))
+	for(token = strtok_r((char *)file_name, " ", &save_ptr); token != NULL;
+			token = strtok_r(NULL, " ", &save_ptr))
 	{
-		printf("\'%s\'\n", argv[argc++] = token);
+		printf("%s\n", argv[argc++] = token);
+		//++argc;
 	}
 
 	/* Allocate and activate page directory. */
@@ -333,7 +321,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
 	}
 
 	/* Set up stack. */
-	if (!setup_stack (esp, argv));
+	if (!setup_stack (esp, argv, argc))
 		goto done;
 
 	/* Start address. */
@@ -458,22 +446,32 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 /* Create a minimal stack by mapping a zeroed page at the top of
    user virtual memory. */
 	static bool
-setup_stack (void **esp, char **argv)
+setup_stack (void **esp, char **argv, int argc)
 {
 	uint8_t *kpage;
 	bool success = false;
-
+	
 	kpage = palloc_get_page (PAL_USER | PAL_ZERO);
 	if (kpage != NULL) 
 	{
+		printf("\n\npenis\n\n\n%s\n", argv[argc-1]);
 		success = install_page (((uint8_t *) PHYS_BASE) - PGSIZE, kpage, true);
 		if (success)
-			*esp = PHYS_BASE - 12; /* This is added to avoid page faults. */
+		{
+			--argc; /* <--- notice this! */
+			*esp = PHYS_BASE;
+			while(argc >= 0)
+			{
+				*esp-=strlen(argv[argc])+1;
+				memcpy(*esp, argv[argc], strlen(argv[argc])+1);
+				--argc;
+			}
+		}
 		else
 			palloc_free_page (kpage);
 	}
-	
-	hex_dump(*esp, &esp, 250, true);
+
+	hex_dump((uintptr_t)*esp, *esp, 64, true);
 
 	return success;
 }
