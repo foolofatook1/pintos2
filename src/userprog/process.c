@@ -199,6 +199,8 @@ struct Elf32_Phdr
 #define PF_W 2          /* Writable. */
 #define PF_R 4          /* Readable. */
 
+/* Used for setup_stack. */
+#define MAX_SIZE 4
 
 static bool setup_stack (void **esp, char **argv, int argc);
 static bool validate_segment (const struct Elf32_Phdr *, struct file *);
@@ -222,9 +224,9 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
 	char *token, *save_ptr;
 	int argc = 0;
-	char **argv;//[MAX_SIZE];
+	char *argv[MAX_SIZE];
 	/* this will need to be changed. */
-	argv = malloc(sizeof(char *)*4); 
+	//argv = malloc(sizeof(char *)*4); 
 
 	/* Parse command into argv[]. */
 	for(token = strtok_r((char *)file_name, " ", &save_ptr); token != NULL;
@@ -450,28 +452,53 @@ setup_stack (void **esp, char **argv, int argc)
 {
 	uint8_t *kpage;
 	bool success = false;
-	
+
 	kpage = palloc_get_page (PAL_USER | PAL_ZERO);
 	if (kpage != NULL) 
 	{
-		printf("\n\npenis\n\n\n%s\n", argv[argc-1]);
+		//printf("\n\npenis\n\n\n%s\n", argv[argc-1]);
 		success = install_page (((uint8_t *) PHYS_BASE) - PGSIZE, kpage, true);
 		if (success)
 		{
-			--argc; /* <--- notice this! */
 			*esp = PHYS_BASE;
-			while(argc >= 0)
+			//memset(*esp, 0, word_align);
+			int i  = argc;
+			uint32_t *arr[argc];
+			//--argc; /* <--- notice this! */
+			while(--i >= 0)
 			{
-				*esp-=strlen(argv[argc])+1;
+				*esp = *esp - (strlen(argv[i])+1)*sizeof(char);
+				arr[i] = (uint32_t *)*esp;
+				memcpy(*esp, argv[i],strlen(argv[i])+1);
+			}
+			*esp = *esp - 4;
+			(*(int *)(*esp)) = 0;
+			i = argc;
+			while(--i > 0)
+			{
+				*esp = *esp - 4;
+				(*(uint32_t **)(*esp)) = arr[i];
+			}
+			*esp = *esp - 4;
+			(*(uintptr_t **)(*esp)) = (*esp+4);
+			*esp = *esp - 4;
+			*(int *)(*esp) = argc;
+			*esp = *esp - 4;
+			(*(int *)(*esp)) = 0;
+		}
+		/*	while(argc >= 0)
+			{
+				*esp = *esp - strlen(argv[argc])+1;
 				memcpy(*esp, argv[argc], strlen(argv[argc])+1);
 				--argc;
 			}
-		}
+			*esp = *esp - 4;
+		}*/
 		else
 			palloc_free_page (kpage);
 	}
 
-	hex_dump((uintptr_t)*esp, *esp, 64, true);
+	hex_dump((uintptr_t)*esp, *esp, 64, true);//strlen(argv[argc])+1, true);
 
 	return success;
 }
