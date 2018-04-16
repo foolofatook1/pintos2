@@ -456,22 +456,21 @@ setup_stack (void **esp, char **argv, int argc)
 	kpage = palloc_get_page (PAL_USER | PAL_ZERO);
 	if (kpage != NULL) 
 	{
-		//printf("\n\npenis\n\n\n%s\n", argv[argc-1]);
 		success = install_page (((uint8_t *) PHYS_BASE) - PGSIZE, kpage, true);
 		if (success)
 		{
 			*esp = PHYS_BASE;
-			//memset(*esp, 0, word_align);
 			int i  = argc;
 			uint32_t *arr[argc];
-			//--argc; /* <--- notice this! */
 			while(--i >= 0)
 			{
 				*esp = *esp - (strlen(argv[i])+1)*sizeof(char);
 				arr[i] = (uint32_t *)*esp;
 				memcpy(*esp, argv[i],strlen(argv[i])+1);
 			}
+			
 			*esp = *esp - 4;
+			
 			(*(int *)(*esp)) = 0;
 			i = argc;
 			while(--i > 0)
@@ -486,19 +485,11 @@ setup_stack (void **esp, char **argv, int argc)
 			*esp = *esp - 4;
 			(*(int *)(*esp)) = 0;
 		}
-		/*	while(argc >= 0)
-			{
-				*esp = *esp - strlen(argv[argc])+1;
-				memcpy(*esp, argv[argc], strlen(argv[argc])+1);
-				--argc;
-			}
-			*esp = *esp - 4;
-		}*/
 		else
 			palloc_free_page (kpage);
 	}
 
-	hex_dump((uintptr_t)*esp, *esp, 64, true);//strlen(argv[argc])+1, true);
+	hex_dump((uintptr_t)*esp, *esp, (int)(PHYS_BASE-*esp), true);
 
 	return success;
 }
