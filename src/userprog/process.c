@@ -92,7 +92,9 @@ start_process (void *file_name_)
 	int
 process_wait (tid_t child_tid UNUSED) 
 {
-	return -1;
+	while(true)
+		thread_yield();
+	return 0;
 }
 
 /* Free the current process's resources. */
@@ -200,7 +202,7 @@ struct Elf32_Phdr
 #define PF_R 4          /* Readable. */
 
 /* Used for setup_stack. */
-#define MAX_SIZE 4
+#define MAX_SIZE 5
 
 static bool setup_stack (void **esp, char **argv, int argc);
 static bool validate_segment (const struct Elf32_Phdr *, struct file *);
@@ -460,39 +462,45 @@ setup_stack (void **esp, char **argv, int argc)
 		if (success)
 		{
 			*esp = PHYS_BASE;
-			int i  = argc;
-			uint32_t *arr[argc];
-			while(--i >= 0)
+			int i = argc;
+			uint32_t *arr[argc]; /* Pointers to the first charof an arg. */
+			int plen = sizeof(void *); /* Pointer length. */
+			
+			for(i = argc-1; i >= 0; i--)
 			{
-				*esp = *esp - (strlen(argv[i])+1)*sizeof(char);
+				*esp -= (strlen(argv[i])+1);
 				arr[i] = (uint32_t *)*esp;
-				memcpy(*esp, argv[i],strlen(argv[i])+1);
+				memcpy(*esp, argv[i],strlen(argv[i])+1); //memcpy before
 			}
-			
-			*esp = *esp - 4;
-			
-			(*(int *)(*esp)) = 0;
-			i = argc;
-			while(--i > 0)
+
+			while((unsigned int)(*esp) % plen != 0)
 			{
-				*esp = *esp - 4;
+				*esp-=1;
+				*(uint8_t*)*esp = 0x00;
+			}
+			*esp -= plen;
+			(*(int *)(*esp)) = 0;
+
+			for(i = argc-1; i >= 0; i--)
+			{
+				*esp -= plen;
 				(*(uint32_t **)(*esp)) = arr[i];
 			}
-			*esp = *esp - 4;
+			*esp -= plen;
 			(*(uintptr_t **)(*esp)) = (*esp+4);
-			*esp = *esp - 4;
-			*(int *)(*esp) = argc;
-			*esp = *esp - 4;
+			*esp -= plen;
+			*(int *)*esp = argc;
+			*esp -= plen;
 			(*(int *)(*esp)) = 0;
 		}
 		else
 			palloc_free_page (kpage);
 	}
-
 	hex_dump((uintptr_t)*esp, *esp, (int)(PHYS_BASE-*esp), true);
 
 	return success;
 }
+
 
 /* Adds a mapping from user virtual address UPAGE to kernel
    virtual address KPAGE to the page table.
