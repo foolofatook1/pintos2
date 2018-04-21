@@ -8,11 +8,11 @@
 
 static void syscall_handler (struct intr_frame *);
 
-#define GET_ARGS1(type1, function) \
+/*#define GET_ARGS1(type1, function) \
 	pointer_check(f->esp); \
 f->eax = function ( \
 		*((type1*) (f->esp)) \
-		);
+		);*/
 
 	static void 
 kill_program (void)
@@ -46,15 +46,12 @@ put_user (uint8_t *udst, uint8_t byte)
 }
 
 	static bool
-is_valid_pointer(void *esp, uint8_t argc)
+valid_pointer_check(void *esp)
 {
-	uint8_t i = 0;
-	for(; i < argc; ++i)
-	{
-		if(get_user(((uint8_t *)esp)+1) == -1)
-			return false;
-	}
-	return true;
+	if(esp != NULL && (uint32_t)esp < (((uint32_t)PHYS_BASE) - 4)
+		&& get_user((uint8_t *)esp) != -1)
+		return 0;
+	return 1;
 }
 
 	static void
@@ -81,11 +78,12 @@ exit (void)
 	static void
 pointer_check(void *esp)
 {
-	if(!is_valid_pointer(esp, 4))
+	if(valid_pointer_check(esp))
 	{
 		kill_program();
 		return;
 	}
+	return;
 }
 
 	static void
@@ -108,11 +106,11 @@ syscall_handler (struct intr_frame *f UNUSED)
 				halt();
 				break;
 			}
-		case SYS_EXIT:
+	/*	case SYS_EXIT:
 			{
 				GET_ARGS1(int, exit)
 				break;
-			}
+			}*/
 	}
 }
 
