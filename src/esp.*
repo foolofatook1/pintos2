@@ -1,0 +1,277 @@
+misc/gcc-3.3.6-cross-howto:30:../configure --target=i386-elf --prefix=$PREFIX --with-gnu-as --with-as=$PREFIX/bin/i386-elf-as --with-gnu-ld --with-ld=$PREFIX/bin/i386-elf-ld --with-headers=$TMP/newlib-1.13.0/newlib/libc/include --with-newlib
+Binary file userprog/.syscall.c.swp matches
+Binary file userprog/.process.h.swp matches
+userprog/esp:3:exception.c:84:	switch (f->cs)
+userprog/esp:4:exception.c:90:					thread_name (), f->vec_no, intr_name (f->vec_no));
+userprog/esp:5:exception.c:106:					f->vec_no, intr_name (f->vec_no), f->cs);
+userprog/esp:6:exception.c:133:	   that caused the fault (that's f->eip).
+userprog/esp:7:exception.c:147:	not_present = (f->error_code & PF_P) == 0;
+userprog/esp:8:exception.c:148:	write = (f->error_code & PF_W) != 0;
+userprog/esp:9:exception.c:149:	user = (f->error_code & PF_U) != 0;
+userprog/esp:14:syscall.c:57:	int fd = *((int*)f->esp + 1);
+userprog/esp:15:syscall.c:58:	void *buffer = (void *)(*((int*)f->esp + 2));
+userprog/esp:16:syscall.c:59:	unsigned size = *((unsigned*)f->esp + 3);
+userprog/esp:17:syscall.c:74:	if(!is_valid_pointer(f->esp, 4))
+userprog/esp:18:syscall.c:79:	int32_t sys_code = *(int*)f->esp;
+userprog/esp:19:pagedir.c:250:   lookaside buffer (TLB) to become out-of-sync with the page
+userprog/esp:20:build/tests/userprog/args-single.output:25:bfffffe0  ed ff ff bf f9 ff ff bf-00 00 00 00 00 61 72 67 |.............arg|
+userprog/esp:21:build/tests/userprog/args-multiple.output:28:bfffffc0  da ff ff bf e8 ff ff bf-ed ff ff bf f7 ff ff bf |................|
+userprog/esp:22:build/tests/userprog/args-dbl-space.output:26:bfffffd0  d4 ff ff bf e5 ff ff bf-f4 ff ff bf f8 ff ff bf |................|
+userprog/exception.c:84:	switch (f->cs)
+userprog/exception.c:90:					thread_name (), f->vec_no, intr_name (f->vec_no));
+userprog/exception.c:106:					f->vec_no, intr_name (f->vec_no), f->cs);
+userprog/exception.c:133:	   that caused the fault (that's f->eip).
+userprog/exception.c:147:	not_present = (f->error_code & PF_P) == 0;
+userprog/exception.c:148:	write = (f->error_code & PF_W) != 0;
+userprog/exception.c:149:	user = (f->error_code & PF_U) != 0;
+Binary file userprog/.process.c.swo matches
+Binary file userprog/.pagedir.c.swp matches
+Binary file userprog/.pagedir.h.swp matches
+Binary file userprog/.process.c.swp matches
+userprog/syscall.c:57:	int fd = *((int*)f->esp + 1);
+userprog/syscall.c:58:	void *buffer = (void *)(*((int*)f->esp + 2));
+userprog/syscall.c:59:	unsigned size = *((unsigned*)f->esp + 3);
+userprog/syscall.c:74:	if(!is_valid_pointer(f->esp, 4))
+userprog/syscall.c:79:	int32_t sys_code = *(int*)f->esp;
+userprog/pagedir.c:250:   lookaside buffer (TLB) to become out-of-sync with the page
+userprog/build/tests/userprog/args-single.output:25:bfffffe0  ed ff ff bf f9 ff ff bf-00 00 00 00 00 61 72 67 |.............arg|
+userprog/build/tests/userprog/args-multiple.output:28:bfffffc0  da ff ff bf e8 ff ff bf-ed ff ff bf f7 ff ff bf |................|
+userprog/build/tests/userprog/args-dbl-space.output:26:bfffffd0  d4 ff ff bf e5 ff ff bf-f4 ff ff bf f8 ff ff bf |................|
+esp:1:misc/gcc-3.3.6-cross-howto:30:../configure --target=i386-elf --prefix=$PREFIX --with-gnu-as --with-as=$PREFIX/bin/i386-elf-as --with-gnu-ld --with-ld=$PREFIX/bin/i386-elf-ld --with-headers=$TMP/newlib-1.13.0/newlib/libc/include --with-newlib
+esp:4:userprog/esp:3:exception.c:84:	switch (f->cs)
+esp:5:userprog/esp:4:exception.c:90:					thread_name (), f->vec_no, intr_name (f->vec_no));
+esp:6:userprog/esp:5:exception.c:106:					f->vec_no, intr_name (f->vec_no), f->cs);
+esp:7:userprog/esp:6:exception.c:133:	   that caused the fault (that's f->eip).
+esp:8:userprog/esp:7:exception.c:147:	not_present = (f->error_code & PF_P) == 0;
+esp:9:userprog/esp:8:exception.c:148:	write = (f->error_code & PF_W) != 0;
+esp:10:userprog/esp:9:exception.c:149:	user = (f->error_code & PF_U) != 0;
+esp:11:userprog/esp:14:syscall.c:57:	int fd = *((int*)f->esp + 1);
+esp:12:userprog/esp:15:syscall.c:58:	void *buffer = (void *)(*((int*)f->esp + 2));
+esp:13:userprog/esp:16:syscall.c:59:	unsigned size = *((unsigned*)f->esp + 3);
+esp:14:userprog/esp:17:syscall.c:74:	if(!is_valid_pointer(f->esp, 4))
+esp:15:userprog/esp:18:syscall.c:79:	int32_t sys_code = *(int*)f->esp;
+esp:16:userprog/esp:19:pagedir.c:250:   lookaside buffer (TLB) to become out-of-sync with the page
+esp:17:userprog/esp:20:build/tests/userprog/args-single.output:25:bfffffe0  ed ff ff bf f9 ff ff bf-00 00 00 00 00 61 72 67 |.............arg|
+esp:18:userprog/esp:21:build/tests/userprog/args-multiple.output:28:bfffffc0  da ff ff bf e8 ff ff bf-ed ff ff bf f7 ff ff bf |................|
+esp:19:userprog/esp:22:build/tests/userprog/args-dbl-space.output:26:bfffffd0  d4 ff ff bf e5 ff ff bf-f4 ff ff bf f8 ff ff bf |................|
+esp:20:userprog/exception.c:84:	switch (f->cs)
+esp:21:userprog/exception.c:90:					thread_name (), f->vec_no, intr_name (f->vec_no));
+esp:22:userprog/exception.c:106:					f->vec_no, intr_name (f->vec_no), f->cs);
+esp:23:userprog/exception.c:133:	   that caused the fault (that's f->eip).
+esp:24:userprog/exception.c:147:	not_present = (f->error_code & PF_P) == 0;
+esp:25:userprog/exception.c:148:	write = (f->error_code & PF_W) != 0;
+esp:26:userprog/exception.c:149:	user = (f->error_code & PF_U) != 0;
+esp:31:userprog/syscall.c:57:	int fd = *((int*)f->esp + 1);
+esp:32:userprog/syscall.c:58:	void *buffer = (void *)(*((int*)f->esp + 2));
+esp:33:userprog/syscall.c:59:	unsigned size = *((unsigned*)f->esp + 3);
+esp:34:userprog/syscall.c:74:	if(!is_valid_pointer(f->esp, 4))
+esp:35:userprog/syscall.c:79:	int32_t sys_code = *(int*)f->esp;
+esp:36:userprog/pagedir.c:250:   lookaside buffer (TLB) to become out-of-sync with the page
+esp:37:userprog/build/tests/userprog/args-single.output:25:bfffffe0  ed ff ff bf f9 ff ff bf-00 00 00 00 00 61 72 67 |.............arg|
+esp:38:userprog/build/tests/userprog/args-multiple.output:28:bfffffc0  da ff ff bf e8 ff ff bf-ed ff ff bf f7 ff ff bf |................|
+esp:39:userprog/build/tests/userprog/args-dbl-space.output:26:bfffffd0  d4 ff ff bf e5 ff ff bf-f4 ff ff bf f8 ff ff bf |................|
+esp:41:lib/kernel/hash.c:348:   ideal.  This function can fail because of an out-of-memory
+esp:42:lib/arithmetic.c:18:   Pintos is completely self-contained, then that makes it that
+esp:43:threads/thread.c:188:  kf->eip = NULL;
+esp:44:threads/thread.c:189:  kf->function = function;
+esp:45:threads/thread.c:190:  kf->aux = aux;
+esp:46:threads/thread.c:194:  ef->eip = (void (*) (void)) kernel_thread;
+esp:47:threads/thread.c:198:  sf->eip = switch_entry;
+esp:48:threads/thread.c:199:  sf->ebp = 0;
+esp:49:threads/interrupt.c:261:/* Sends an end-of-interrupt signal to the PIC for the given IRQ.
+esp:50:threads/interrupt.c:397:  unsigned int n = ++unexpected_cnt[f->vec_no];
+esp:51:threads/interrupt.c:406:    f->vec_no, intr_names[f->vec_no]);
+esp:52:threads/interrupt.c:423:          f->vec_no, intr_names[f->vec_no], f->eip);
+esp:53:threads/interrupt.c:424:  printf (" cr2=%08"PRIx32" error=%08"PRIx32"\n", cr2, f->error_code);
+esp:54:threads/interrupt.c:426:          f->eax, f->ebx, f->ecx, f->edx);
+esp:55:threads/interrupt.c:428:          f->esi, f->edi, (uint32_t) f->esp, f->ebp);
+esp:56:threads/interrupt.c:430:          f->cs, f->ds, f->es, f->ss);
+esp:57:threads/synch.c:125:/* Self-test for semaphores that makes control "ping-pong"
+esp:58:filesys/directory.c:161:     current end-of-file.
+esp:59:filesys/fsutil.c:148:     end-of-archive marker. */
+esp:60:filesys/fsutil.c:213:  /* Write ustar end-of-archive marker, which is two consecutive
+esp:62:examples/insult.c:23:  { "lame", "dried", "up", "par-broiled", "bloated", "half-baked", "spiteful",
+esp:64:devices/timer.c:51:  /* Approximate loops_per_tick as the largest power-of-two
+esp:65:devices/ide.c:512:    if (f->vec_no == c->irq)
+esp:66:utils/backtrace:50:my ($a2l) = search_path ("i386-elf-addr2line") || search_path ("addr2line");
+esp:67:utils/backtrace:52:    die "backtrace: neither `i386-elf-addr2line' nor `addr2line' in PATH\n";
+esp:68:utils/pintos:232:      if defined $as_ref->[1];
+esp:69:utils/pintos:233:    $as_ref->[1] = $as;
+esp:70:utils/pintos:333:    # then write an end-of-archive marker.
+esp:71:utils/pintos-gdb~:7:if command -v i386-elf-gdb >/dev/null 2>&1; then
+esp:72:utils/pintos-gdb~:8:	GDB=i386-elf-gdb
+esp:73:utils/pintos-gdb:7:if command -v i386-elf-gdb >/dev/null 2>&1; then
+esp:74:utils/pintos-gdb:8:	GDB=i386-elf-gdb
+esp:75:utils/squish-unix.c:81:   FD_IS_SOCK is true, that returned end-of-file or error
+esp:76:utils/squish-unix.c:126:     end-of-line. */
+esp:77:utils/squish-pty.c:78:   is true, that returned end-of-file or error indication RETVAL.
+esp:78:utils/squish-pty.c:129:     waiting for end-of-line.  We want to minimize context
+esp:79:tests/tests.pm:207:	my ($d) = Algorithm::Diff->new (\@expected, \@output);
+esp:80:tests/threads/mlfqs.pm:101:	my ($actual) = $actual_ref->[$t];
+esp:81:tests/threads/mlfqs.pm:102:	my ($expected) = $expected_ref->[$t];
+esp:82:tests/threads/mlfqs.pm:112:	my ($actual) = $actual_ref->[$t];
+esp:83:tests/threads/mlfqs.pm:113:	my ($expected) = $expected_ref->[$t];
+esp:84:tests/Algorithm/Diff.pm:597:    if(  0 == $cdif->[2]  &&  0 == $cdif->[3]  ) {
+esp:85:tests/Algorithm/Diff.pm:799:    my $diff = Algorithm::Diff->new( \@seq1, \@seq2 );
+esp:86:tests/Algorithm/Diff.pm:801:    $diff->Base( 1 );   # Return line numbers, not indices
+esp:87:tests/Algorithm/Diff.pm:802:    while(  $diff->Next()  ) {
+esp:88:tests/Algorithm/Diff.pm:803:        next   if  $diff->Same();
+esp:89:tests/Algorithm/Diff.pm:805:        if(  ! $diff->Items(2)  ) {
+esp:90:tests/Algorithm/Diff.pm:807:                $diff->Get(qw( Min1 Max1 Max2 ));
+esp:91:tests/Algorithm/Diff.pm:808:        } elsif(  ! $diff->Items(1)  ) {
+esp:92:tests/Algorithm/Diff.pm:810:                $diff->Get(qw( Max1 Min2 Max2 ));
+esp:93:tests/Algorithm/Diff.pm:814:                $diff->Get(qw( Min1 Max1 Min2 Max2 ));
+esp:94:tests/Algorithm/Diff.pm:816:        print "< $_"   for  $diff->Items(1);
+esp:95:tests/Algorithm/Diff.pm:818:        print "> $_"   for  $diff->Items(2);
+esp:96:tests/Algorithm/Diff.pm:894:From there it's only a small step to get diff-like output:
+esp:97:tests/Algorithm/Diff.pm:1000:    $obj        = Algorithm::Diff->new( \@seq1, \@seq2, [ \%opts ] );
+esp:98:tests/Algorithm/Diff.pm:1023:    $pos = $diff->Next();    # Move forward 1 hunk
+esp:99:tests/Algorithm/Diff.pm:1024:    $pos = $diff->Next( 2 ); # Move forward 2 hunks
+esp:100:tests/Algorithm/Diff.pm:1025:    $pos = $diff->Next(-5);  # Move backward 5 hunks
+esp:101:tests/Algorithm/Diff.pm:1048:    $diff->Reset();     # Reset the object's position
+esp:102:tests/Algorithm/Diff.pm:1049:    $diff->Reset($pos); # Move to the specified hunk
+esp:103:tests/Algorithm/Diff.pm:1050:    $diff->Reset(1);    # Move to the first hunk
+esp:104:tests/Algorithm/Diff.pm:1051:    $diff->Reset(-1);   # Move to the last hunk
+esp:105:tests/Algorithm/Diff.pm:1054:C<< $diff->Reset()->Next(-1) >> to get the number of hunks.
+esp:106:tests/Algorithm/Diff.pm:1058:    $copy = $diff->Copy( $newPos, $newBase );
+esp:107:tests/Algorithm/Diff.pm:1069:    $copy = $diff->Copy($pos);
+esp:108:tests/Algorithm/Diff.pm:1071:    $copy = $diff->Copy();
+esp:109:tests/Algorithm/Diff.pm:1074:    $copy = $diff->Copy()->Reset($pos);
+esp:110:tests/Algorithm/Diff.pm:1081:    $copy = $diff->Copy();
+esp:111:tests/Algorithm/Diff.pm:1084:    $copy = $diff->Copy(undef,0);
+esp:112:tests/Algorithm/Diff.pm:1088:    $copy = $diff->Copy(0);
+esp:113:tests/Algorithm/Diff.pm:1090:    $copy = $diff->Copy()->Reset();
+esp:114:tests/Algorithm/Diff.pm:1137:    $count = $diff->Items(2);
+esp:115:tests/Algorithm/Diff.pm:1138:    @items = $diff->Items($seqNum);
+esp:116:tests/Algorithm/Diff.pm:1144:C<< $diff->Items(1) >> will return an empty list (0 in a scalar conext).
+esp:117:tests/Algorithm/Diff.pm:1145:If the current hunk contains only deletions, then C<< $diff->Items(2) >>
+esp:118:tests/Algorithm/Diff.pm:1148:If the hunk contains replacements, then both C<< $diff->Items(1) >> and
+esp:119:tests/Algorithm/Diff.pm:1149:C<< $diff->Items(2) >> will return different, non-empty lists.
+esp:120:tests/Algorithm/Diff.pm:1154:    @items = $diff->Items(1);
+esp:121:tests/Algorithm/Diff.pm:1155:    @items = $diff->Items(2);
+esp:122:tests/Algorithm/Diff.pm:1156:    @items = $diff->Same();
+esp:123:tests/Algorithm/Diff.pm:1160:    $count = $diff->Range( $seqNum );
+esp:124:tests/Algorithm/Diff.pm:1161:    @indices = $diff->Range( $seqNum );
+esp:125:tests/Algorithm/Diff.pm:1162:    @indices = $diff->Range( $seqNum, $base );
+esp:126:tests/Algorithm/Diff.pm:1170:    @list = $diff->Items(2);
+esp:127:tests/Algorithm/Diff.pm:1171:    @list = @seq2[ $diff->Range(2) ];
+esp:128:tests/Algorithm/Diff.pm:1176:    @list = $diff->Items(1);
+esp:129:tests/Algorithm/Diff.pm:1177:    @list = @seq1[ $diff->Range(1,0) ];
+esp:130:tests/Algorithm/Diff.pm:1181:    $curBase = $diff->Base();
+esp:131:tests/Algorithm/Diff.pm:1182:    $oldBase = $diff->Base($newBase);
+esp:132:tests/Algorithm/Diff.pm:1191:    $min1 = $diff->Min(1);
+esp:133:tests/Algorithm/Diff.pm:1192:    $min = $diff->Min( $seqNum, $base );
+esp:134:tests/Algorithm/Diff.pm:1204:    ( $n, $x, $r ) = $diff->Get(qw( min1 max1 range1 ));
+esp:135:tests/Algorithm/Diff.pm:1205:    @values = $diff->Get(qw( 0min2 1max2 range2 same base ));
+esp:136:tests/Algorithm/Diff.pm:1218:    $diff->Get('min1') == $diff->Min(1)
+esp:137:tests/Algorithm/Diff.pm:1219:    $diff->Get('0min2') == $diff->Min(2,0)
+esp:138:tests/Algorithm/Diff.pm:1686:empty mail message to mjd-perl-diff-request@plover.com.
+esp:139:tests/lib.h:16:   may include printf-style arguments.  Logs the message, then
+esp:140:Make.config:10:# Otherwise assume cross-tools are installed as i386-elf-*.
+esp:141:Make.config:23:    CC = i386-elf-gcc
+esp:142:Make.config:24:    LD = i386-elf-ld
+esp:143:Make.config:25:    OBJCOPY = i386-elf-objcopy
+Binary file lib/.syscall-nr.h.swp matches
+lib/kernel/hash.c:348:   ideal.  This function can fail because of an out-of-memory
+lib/arithmetic.c:18:   Pintos is completely self-contained, then that makes it that
+threads/thread.c:188:  kf->eip = NULL;
+threads/thread.c:189:  kf->function = function;
+threads/thread.c:190:  kf->aux = aux;
+threads/thread.c:194:  ef->eip = (void (*) (void)) kernel_thread;
+threads/thread.c:198:  sf->eip = switch_entry;
+threads/thread.c:199:  sf->ebp = 0;
+threads/interrupt.c:261:/* Sends an end-of-interrupt signal to the PIC for the given IRQ.
+threads/interrupt.c:397:  unsigned int n = ++unexpected_cnt[f->vec_no];
+threads/interrupt.c:406:    f->vec_no, intr_names[f->vec_no]);
+threads/interrupt.c:423:          f->vec_no, intr_names[f->vec_no], f->eip);
+threads/interrupt.c:424:  printf (" cr2=%08"PRIx32" error=%08"PRIx32"\n", cr2, f->error_code);
+threads/interrupt.c:426:          f->eax, f->ebx, f->ecx, f->edx);
+threads/interrupt.c:428:          f->esi, f->edi, (uint32_t) f->esp, f->ebp);
+threads/interrupt.c:430:          f->cs, f->ds, f->es, f->ss);
+threads/synch.c:125:/* Self-test for semaphores that makes control "ping-pong"
+filesys/directory.c:161:     current end-of-file.
+filesys/fsutil.c:148:     end-of-archive marker. */
+filesys/fsutil.c:213:  /* Write ustar end-of-archive marker, which is two consecutive
+Binary file examples/insult.o matches
+examples/insult.c:23:  { "lame", "dried", "up", "par-broiled", "bloated", "half-baked", "spiteful",
+Binary file examples/insult matches
+devices/timer.c:51:  /* Approximate loops_per_tick as the largest power-of-two
+devices/ide.c:512:    if (f->vec_no == c->irq)
+utils/backtrace:50:my ($a2l) = search_path ("i386-elf-addr2line") || search_path ("addr2line");
+utils/backtrace:52:    die "backtrace: neither `i386-elf-addr2line' nor `addr2line' in PATH\n";
+utils/pintos:232:      if defined $as_ref->[1];
+utils/pintos:233:    $as_ref->[1] = $as;
+utils/pintos:333:    # then write an end-of-archive marker.
+utils/pintos-gdb~:7:if command -v i386-elf-gdb >/dev/null 2>&1; then
+utils/pintos-gdb~:8:	GDB=i386-elf-gdb
+utils/pintos-gdb:7:if command -v i386-elf-gdb >/dev/null 2>&1; then
+utils/pintos-gdb:8:	GDB=i386-elf-gdb
+utils/squish-unix.c:81:   FD_IS_SOCK is true, that returned end-of-file or error
+utils/squish-unix.c:126:     end-of-line. */
+utils/squish-pty.c:78:   is true, that returned end-of-file or error indication RETVAL.
+utils/squish-pty.c:129:     waiting for end-of-line.  We want to minimize context
+tests/tests.pm:207:	my ($d) = Algorithm::Diff->new (\@expected, \@output);
+tests/threads/mlfqs.pm:101:	my ($actual) = $actual_ref->[$t];
+tests/threads/mlfqs.pm:102:	my ($expected) = $expected_ref->[$t];
+tests/threads/mlfqs.pm:112:	my ($actual) = $actual_ref->[$t];
+tests/threads/mlfqs.pm:113:	my ($expected) = $expected_ref->[$t];
+tests/Algorithm/Diff.pm:597:    if(  0 == $cdif->[2]  &&  0 == $cdif->[3]  ) {
+tests/Algorithm/Diff.pm:799:    my $diff = Algorithm::Diff->new( \@seq1, \@seq2 );
+tests/Algorithm/Diff.pm:801:    $diff->Base( 1 );   # Return line numbers, not indices
+tests/Algorithm/Diff.pm:802:    while(  $diff->Next()  ) {
+tests/Algorithm/Diff.pm:803:        next   if  $diff->Same();
+tests/Algorithm/Diff.pm:805:        if(  ! $diff->Items(2)  ) {
+tests/Algorithm/Diff.pm:807:                $diff->Get(qw( Min1 Max1 Max2 ));
+tests/Algorithm/Diff.pm:808:        } elsif(  ! $diff->Items(1)  ) {
+tests/Algorithm/Diff.pm:810:                $diff->Get(qw( Max1 Min2 Max2 ));
+tests/Algorithm/Diff.pm:814:                $diff->Get(qw( Min1 Max1 Min2 Max2 ));
+tests/Algorithm/Diff.pm:816:        print "< $_"   for  $diff->Items(1);
+tests/Algorithm/Diff.pm:818:        print "> $_"   for  $diff->Items(2);
+tests/Algorithm/Diff.pm:894:From there it's only a small step to get diff-like output:
+tests/Algorithm/Diff.pm:1000:    $obj        = Algorithm::Diff->new( \@seq1, \@seq2, [ \%opts ] );
+tests/Algorithm/Diff.pm:1023:    $pos = $diff->Next();    # Move forward 1 hunk
+tests/Algorithm/Diff.pm:1024:    $pos = $diff->Next( 2 ); # Move forward 2 hunks
+tests/Algorithm/Diff.pm:1025:    $pos = $diff->Next(-5);  # Move backward 5 hunks
+tests/Algorithm/Diff.pm:1048:    $diff->Reset();     # Reset the object's position
+tests/Algorithm/Diff.pm:1049:    $diff->Reset($pos); # Move to the specified hunk
+tests/Algorithm/Diff.pm:1050:    $diff->Reset(1);    # Move to the first hunk
+tests/Algorithm/Diff.pm:1051:    $diff->Reset(-1);   # Move to the last hunk
+tests/Algorithm/Diff.pm:1054:C<< $diff->Reset()->Next(-1) >> to get the number of hunks.
+tests/Algorithm/Diff.pm:1058:    $copy = $diff->Copy( $newPos, $newBase );
+tests/Algorithm/Diff.pm:1069:    $copy = $diff->Copy($pos);
+tests/Algorithm/Diff.pm:1071:    $copy = $diff->Copy();
+tests/Algorithm/Diff.pm:1074:    $copy = $diff->Copy()->Reset($pos);
+tests/Algorithm/Diff.pm:1081:    $copy = $diff->Copy();
+tests/Algorithm/Diff.pm:1084:    $copy = $diff->Copy(undef,0);
+tests/Algorithm/Diff.pm:1088:    $copy = $diff->Copy(0);
+tests/Algorithm/Diff.pm:1090:    $copy = $diff->Copy()->Reset();
+tests/Algorithm/Diff.pm:1137:    $count = $diff->Items(2);
+tests/Algorithm/Diff.pm:1138:    @items = $diff->Items($seqNum);
+tests/Algorithm/Diff.pm:1144:C<< $diff->Items(1) >> will return an empty list (0 in a scalar conext).
+tests/Algorithm/Diff.pm:1145:If the current hunk contains only deletions, then C<< $diff->Items(2) >>
+tests/Algorithm/Diff.pm:1148:If the hunk contains replacements, then both C<< $diff->Items(1) >> and
+tests/Algorithm/Diff.pm:1149:C<< $diff->Items(2) >> will return different, non-empty lists.
+tests/Algorithm/Diff.pm:1154:    @items = $diff->Items(1);
+tests/Algorithm/Diff.pm:1155:    @items = $diff->Items(2);
+tests/Algorithm/Diff.pm:1156:    @items = $diff->Same();
+tests/Algorithm/Diff.pm:1160:    $count = $diff->Range( $seqNum );
+tests/Algorithm/Diff.pm:1161:    @indices = $diff->Range( $seqNum );
+tests/Algorithm/Diff.pm:1162:    @indices = $diff->Range( $seqNum, $base );
+tests/Algorithm/Diff.pm:1170:    @list = $diff->Items(2);
+tests/Algorithm/Diff.pm:1171:    @list = @seq2[ $diff->Range(2) ];
+tests/Algorithm/Diff.pm:1176:    @list = $diff->Items(1);
+tests/Algorithm/Diff.pm:1177:    @list = @seq1[ $diff->Range(1,0) ];
+tests/Algorithm/Diff.pm:1181:    $curBase = $diff->Base();
+tests/Algorithm/Diff.pm:1182:    $oldBase = $diff->Base($newBase);
+tests/Algorithm/Diff.pm:1191:    $min1 = $diff->Min(1);
+tests/Algorithm/Diff.pm:1192:    $min = $diff->Min( $seqNum, $base );
+tests/Algorithm/Diff.pm:1204:    ( $n, $x, $r ) = $diff->Get(qw( min1 max1 range1 ));
+tests/Algorithm/Diff.pm:1205:    @values = $diff->Get(qw( 0min2 1max2 range2 same base ));
+tests/Algorithm/Diff.pm:1218:    $diff->Get('min1') == $diff->Min(1)
+tests/Algorithm/Diff.pm:1219:    $diff->Get('0min2') == $diff->Min(2,0)
+tests/Algorithm/Diff.pm:1686:empty mail message to mjd-perl-diff-request@plover.com.
+tests/lib.h:16:   may include printf-style arguments.  Logs the message, then
+Make.config:10:# Otherwise assume cross-tools are installed as i386-elf-*.
+Make.config:23:    CC = i386-elf-gcc
+Make.config:24:    LD = i386-elf-ld
+Make.config:25:    OBJCOPY = i386-elf-objcopy

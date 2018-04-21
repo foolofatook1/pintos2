@@ -1,0 +1,22 @@
+Binary file .syscall.c.swp matches
+Binary file .process.h.swp matches
+exception.c:84:	switch (f->cs)
+exception.c:90:					thread_name (), f->vec_no, intr_name (f->vec_no));
+exception.c:106:					f->vec_no, intr_name (f->vec_no), f->cs);
+exception.c:133:	   that caused the fault (that's f->eip).
+exception.c:147:	not_present = (f->error_code & PF_P) == 0;
+exception.c:148:	write = (f->error_code & PF_W) != 0;
+exception.c:149:	user = (f->error_code & PF_U) != 0;
+Binary file .process.c.swo matches
+Binary file .pagedir.c.swp matches
+Binary file .pagedir.h.swp matches
+Binary file .process.c.swp matches
+syscall.c:57:	int fd = *((int*)f->esp + 1);
+syscall.c:58:	void *buffer = (void *)(*((int*)f->esp + 2));
+syscall.c:59:	unsigned size = *((unsigned*)f->esp + 3);
+syscall.c:74:	if(!is_valid_pointer(f->esp, 4))
+syscall.c:79:	int32_t sys_code = *(int*)f->esp;
+pagedir.c:250:   lookaside buffer (TLB) to become out-of-sync with the page
+build/tests/userprog/args-single.output:25:bfffffe0  ed ff ff bf f9 ff ff bf-00 00 00 00 00 61 72 67 |.............arg|
+build/tests/userprog/args-multiple.output:28:bfffffc0  da ff ff bf e8 ff ff bf-ed ff ff bf f7 ff ff bf |................|
+build/tests/userprog/args-dbl-space.output:26:bfffffd0  d4 ff ff bf e5 ff ff bf-f4 ff ff bf f8 ff ff bf |................|

@@ -21,6 +21,8 @@
 static thread_func start_process NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
 
+void get_args(char *cmd_string, char **argv, int *argc);
+
 /* Starts a new thread running a user program loaded from
    FILENAME.  The new thread may be scheduled (and may even exit)
    before process_execute() returns.  Returns the new process's
@@ -227,16 +229,16 @@ load (const char *file_name, void (**eip) (void), void **esp)
 	char *token, *save_ptr;
 	int argc = 0;
 	char *argv[MAX_SIZE];
-	/* this will need to be changed. */
-	//argv = malloc(sizeof(char *)*4); 
-
+	//char file_name_copy[100];
+	//strlcpy(file_name_copy, file_name, 100);
+	//get_args(file_name_copy, argv, &argc);
 	/* Parse command into argv[]. */
 	for(token = strtok_r((char *)file_name, " ", &save_ptr); token != NULL;
-			token = strtok_r(NULL, " ", &save_ptr))
+	  token = strtok_r(NULL, " ", &save_ptr))
 	{
-		printf("%s\n", argv[argc++] = token);
-		//++argc;
+	  printf("%s\n", argv[argc++] = token);
 	}
+
 
 	/* Allocate and activate page directory. */
 	t->pagedir = pagedir_create ();
@@ -465,7 +467,7 @@ setup_stack (void **esp, char **argv, int argc)
 			int i = argc;
 			uint32_t *arr[argc]; /* Pointers to the first charof an arg. */
 			int plen = sizeof(void *); /* Pointer length. */
-			
+
 			for(i = argc-1; i >= 0; i--)
 			{
 				*esp -= (strlen(argv[i])+1);
@@ -492,15 +494,26 @@ setup_stack (void **esp, char **argv, int argc)
 			*(int *)*esp = argc;
 			*esp -= plen;
 			(*(int *)(*esp)) = 0;
+
+			hex_dump((uintptr_t)*esp, *esp, (int)(PHYS_BASE-*esp), true);
 		}
 		else
 			palloc_free_page (kpage);
 	}
-	hex_dump((uintptr_t)*esp, *esp, (int)(PHYS_BASE-*esp), true);
 
 	return success;
 }
 
+//	void
+//get_args(char *cmd_string, char **argv, int *argc)
+//{
+//	char *save_ptr;
+//	argv[0] = strtok_r(cmd_string, " ", &save_ptr);
+//	char *token; 
+//	*argc = 1;
+//	while((token = strtok_r(NULL, " ", &save_ptr))!=NULL)
+//		argv[(*argc)++] = token;
+//}
 
 /* Adds a mapping from user virtual address UPAGE to kernel
    virtual address KPAGE to the page table.
