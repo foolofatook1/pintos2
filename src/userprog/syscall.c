@@ -1,23 +1,73 @@
 #include "userprog/syscall.h"
+
 #include <stdio.h>
+#include <string.h>
 #include <syscall-nr.h>
+#include "devices/input.h"
+#include "devices/shutdown.h"
+#include "filesys/file.h"
+#include "filesys/filesys.h"
 #include "threads/interrupt.h"
+#include "threads/malloc.h"
+#include "threads/synch.h"
 #include "threads/thread.h"
 #include "threads/vaddr.h"
-#include "devices/shutdown.h"
+#include "threads/pte.h"
+#include "userprog/process.h"
+#include "userprog/pagedir.h"
+#include "devices/block.h"
 
 static void syscall_handler (struct intr_frame *);
+static int get_user(const uint8_t *uaddr);
+static bool put_user (uint8_t *udst, uint8_t byte);
+static bool valid_pointer_check(void *esp);
+static int halt (void);
+static int exit (int status);
+static int write (int fd, const void *buffer, unsigned length);
+static void pointer_check(void *esp);
+static void pointer_check_range(const void *start, off_t length);
 
-/*#define GET_ARGS1(type1, function) \
-	pointer_check(f->esp); \
+	void
+syscall_init (void) 
+{
+	intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
+}
+
+#define GET_ARGS1(type1, function) \
+	pointer_check(f->esp+4); \
 f->eax = function ( \
 		*((type1*) (f->esp)) \
-		);*/
+		);
 
-	static void 
-kill_program (void)
+#define GET_ARGS3(type1, type2, type3, function) \
+	pointer_check(f->esp+4); \
+pointer_check(f->esp+8); \
+pointer_check(f->esp+12); \
+f->eax = function ( \
+		*((type1*)(f->esp+4)), \
+		(void*) *((uint32_t*) (f->esp+8)), \
+		*((type3*) (f->esp+12)) \
+		);
+
+	static void
+pointer_check(void *esp)
 {
-	thread_exit ();
+	if(valid_pointer_check(esp))
+	{
+		process_kill();
+		return;
+	}
+	return;
+}
+
+	static void
+pointer_check_range(const void *start, off_t length)
+{
+	if(start + length < start)
+		process_kill ();
+	int32_t i;
+	for(i = 0; i < length; ++i)
+		pointer_check(start + i);
 }
 
 /* UADDR must be below PHYS_BASE. 
@@ -49,17 +99,9 @@ put_user (uint8_t *udst, uint8_t byte)
 valid_pointer_check(void *esp)
 {
 	if(esp != NULL && (uint32_t)esp < (((uint32_t)PHYS_BASE) - 4)
-		&& get_user((uint8_t *)esp) != -1)
+			&& get_user((uint8_t *)esp) != -1)
 		return 0;
 	return 1;
-}
-
-	static void
-get_args(struct intr_frame *f)
-{
-	int fd = *((int*)f->esp + 1);
-	void *buffer = (void *)(*((int*)f->esp + 2));
-	unsigned size = *((unsigned*)f->esp + 3);
 }
 
 /* Terminates pintos by calling shutdown_power_off(). */
@@ -72,18 +114,25 @@ halt (void)
 }
 
 	static int
-exit (void)
-{}
-
-	static void
-pointer_check(void *esp)
+exit (int status)
 {
-	if(valid_pointer_check(esp))
+	thread_current()->exit_status = status;
+	process_kill ();
+	NOT_REACHED();
+}
+
+	static int 
+write (int fd, const void *buffer_, unsigned length)
+{
+	pointer_check_range(buffer_, length);
+	char *buffer = (char *)(buffer_);
+	if(fd == STDOUT_FILENO)
 	{
-		kill_program();
-		return;
+		putbuf((char *)buffer, (size_t)length);
+		return (int)length;
 	}
-	return;
+	else
+		return -1;
 }
 
 	static void
@@ -94,11 +143,11 @@ syscall_handler (struct intr_frame *f UNUSED)
 
 	if(sys_code < 0 || sys_code >= 20)
 	{
-		kill_program();
+		process_kill();
 		return;
 	}
 
-	printf("HELLO%d\n\n", sys_code);
+	//printf("HELLO%d\n\n", sys_code);
 	switch(sys_code)
 	{
 		case SYS_HALT:
@@ -106,16 +155,15 @@ syscall_handler (struct intr_frame *f UNUSED)
 				halt();
 				break;
 			}
-	/*	case SYS_EXIT:
+		case SYS_EXIT:
 			{
-				GET_ARGS1(int, exit)
+				GET_ARGS1(int, exit);
 				break;
-			}*/
+			}
+		case SYS_WRITE:
+			{
+				GET_ARGS3(int, void *, unsigned, write);
+				break;
+			}
 	}
-}
-
-	void
-syscall_init (void) 
-{
-	intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
 }

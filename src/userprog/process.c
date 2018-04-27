@@ -99,12 +99,23 @@ process_wait (tid_t child_tid UNUSED)
 	return 0;
 }
 
+/* Kills current process. */
+	void
+process_kill (void)
+{
+	thread_current()->exit_status = -1;
+	thread_exit ();
+}
 /* Free the current process's resources. */
 	void
 process_exit (void)
 {
 	struct thread *cur = thread_current ();
 	uint32_t *pd;
+
+	char *name = cur->name;
+	if(cur->tid >= 2)
+		printf("%s: exit(%d)\n", name, cur->exit_status);
 
 	/* Destroy the current process's page directory and switch back
 	   to the kernel-only page directory. */

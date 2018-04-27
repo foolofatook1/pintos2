@@ -1,6 +1,7 @@
 #ifndef THREADS_THREAD_H
 #define THREADS_THREAD_H
 
+#include "threads/synch.h"
 #include <debug.h>
 #include <list.h>
 #include <stdint.h>
@@ -90,12 +91,20 @@ struct thread
     int priority;                       /* Priority. */
     struct list_elem allelem;           /* List element for all threads list. */
 
+	int64_t sleep;                      /* How long to block for */
+	struct semaphore sema;              /* A semaphore to block */
+	struct list_elem lm;                /* List element for sleeping threads. */
+
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
+
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
+
+	//struct list fd_table;				/* List of file descriptors. */
+	int exit_status;
 #endif
 
     /* Owned by thread.c. */
