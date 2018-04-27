@@ -11,6 +11,7 @@
 #include "threads/switch.h"
 #include "threads/synch.h"
 #include "threads/vaddr.h"
+#include <inttypes.h>
 #ifdef USERPROG
 #include "userprog/process.h"
 #endif
@@ -320,7 +321,14 @@ thread_exit ()
 {
 	ASSERT (!intr_context ());
 
+	//	struct thread *cur = thread_current();
+	//	uint32_t *pd;
+	//	pd = cur->pagedir;
+	//	printf("thread_exit pd: %" PRIu32 "\n", *pd);
 #ifdef USERPROG
+//	printf("threads exit_sema = %d\n", (int)thread_current()->exit_sema.value);
+	sema_up(&thread_current()->exit_sema); /* Stop waiting and exit. */
+//	printf("threads exit_sema = %d\n", (int)thread_current()->exit_sema.value);
 	process_exit ();
 #endif
 
@@ -330,6 +338,9 @@ thread_exit ()
 	intr_disable ();
 	list_remove (&thread_current()->allelem);
 	thread_current ()->status = THREAD_DYING;
+
+
+
 	schedule ();
 	NOT_REACHED ();
 }
@@ -509,6 +520,7 @@ init_thread (struct thread *t, const char *name, int priority)
 	//list_init(&(t->fd_table));
 
 	sema_init (&t->sema,0);
+	sema_init (&t->exit_sema,0);
 }
 
 /* Allocates a SIZE-byte frame at the top of thread T's stack and

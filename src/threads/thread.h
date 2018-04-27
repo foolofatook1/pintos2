@@ -93,6 +93,7 @@ struct thread
 
 	int64_t sleep;                      /* How long to block for */
 	struct semaphore sema;              /* A semaphore to block */
+	struct semaphore exit_sema;			/* A semaphore to for being exited. */
 	struct list_elem lm;                /* List element for sleeping threads. */
 
     /* Shared between thread.c and synch.c. */
@@ -121,6 +122,9 @@ void thread_start (void);
 
 void thread_tick (void);
 void thread_print_stats (void);
+
+void thread_wake (void);
+void thread_sleep (int64_t ticks);
 
 typedef void thread_func (void *aux);
 tid_t thread_create (const char *name, int priority, thread_func *, void *);

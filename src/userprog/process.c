@@ -94,8 +94,18 @@ start_process (void *file_name_)
 	int
 process_wait (tid_t child_tid UNUSED) 
 {
-	while(true)
-		thread_yield();
+//	while(true)
+//	{
+//		thread_yield();
+//	}
+
+/* need to make sure thread exit does a sema_up() on parent process. */
+	printf("1 thread_current()->exit_sema = %d\n", 
+		(int)thread_current()->exit_sema.value);
+	sema_down(&thread_current()->exit_sema);
+	printf("2 thread_current()->exit_sema = %d\n", 
+		(int)thread_current()->exit_sema.value);
+
 	return 0;
 }
 
@@ -103,7 +113,7 @@ process_wait (tid_t child_tid UNUSED)
 	void
 process_kill (void)
 {
-	thread_current()->exit_status = -1;
+	thread_current()->exit_status = 0;
 	thread_exit ();
 }
 /* Free the current process's resources. */
@@ -122,6 +132,7 @@ process_exit (void)
 	pd = cur->pagedir;
 	if (pd != NULL) 
 	{
+		//printf("pd: %" PRIu32 "\n", *pd);
 		/* Correct ordering here is crucial.  We must set
 		   cur->pagedir to NULL before switching page directories,
 		   so that a timer interrupt can't switch back to the

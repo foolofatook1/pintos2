@@ -147,7 +147,7 @@ syscall_handler (struct intr_frame *f UNUSED)
 		return;
 	}
 
-	//printf("HELLO%d\n\n", sys_code);
+	printf("%d\n\n", sys_code);
 	switch(sys_code)
 	{
 		case SYS_HALT:
