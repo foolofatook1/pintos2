@@ -99,12 +99,28 @@ process_wait (tid_t child_tid UNUSED)
 //		thread_yield();
 //	}
 
+	struct list_elem *it;
+	struct process *pr = NULL;
+	for(it = list_begin(&thread_current()->child_processes);
+		it != list_end(&thread_current()->child_processes);
+		it = list_next(it))
+	{
+		pr = list_entry(it, struct process, elem);
+		if (pr->tid == child_tid)
+			break;
+	}
+	if(pr == NULL)
+		return -1;
+	
+	sema_down(&pr->exit_sema);
+	return pr->exit_status;
+
 /* need to make sure thread exit does a sema_up() on parent process. */
-	printf("1 thread_current()->exit_sema = %d\n", 
+	/*printf("1 thread_current()->exit_sema = %d\n", 
 		(int)thread_current()->exit_sema.value);
 	sema_down(&thread_current()->exit_sema);
 	printf("2 thread_current()->exit_sema = %d\n", 
-		(int)thread_current()->exit_sema.value);
+		(int)thread_current()->exit_sema.value);*/
 
 	return 0;
 }
@@ -124,8 +140,16 @@ process_exit (void)
 	uint32_t *pd;
 
 	char *name = cur->name;
+	for(int i = 0; i < strlen(name); ++i)
+	{
+		if(name[i] == ' ')
+			name[i] = '\0';
+	}
 	if(cur->tid >= 2)
+	{
 		printf("%s: exit(%d)\n", name, cur->exit_status);
+		sema_up(&thread_current()->process_wrapped->exit_sema);
+	}
 
 	/* Destroy the current process's page directory and switch back
 	   to the kernel-only page directory. */
@@ -258,7 +282,8 @@ load (const char *file_name, void (**eip) (void), void **esp)
 	for(token = strtok_r((char *)file_name, " ", &save_ptr); token != NULL;
 	  token = strtok_r(NULL, " ", &save_ptr))
 	{
-	  printf("%s\n", argv[argc++] = token);
+	//  printf("%s\n", 
+	  argv[argc++] = token;
 	}
 
 
@@ -517,7 +542,7 @@ setup_stack (void **esp, char **argv, int argc)
 			*esp -= plen;
 			(*(int *)(*esp)) = 0;
 
-			hex_dump((uintptr_t)*esp, *esp, (int)(PHYS_BASE-*esp), true);
+			//hex_dump((uintptr_t)*esp, *esp, (int)(PHYS_BASE-*esp), true);
 		}
 		else
 			palloc_free_page (kpage);

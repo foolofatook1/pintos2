@@ -222,6 +222,22 @@ thread_create (const char *name, int priority,
 	init_thread (t, name, priority);
 	tid = t->tid = allocate_tid ();
 
+	if(tid >= 2)
+	{
+		struct process *new_process = (struct process *) malloc(sizeof(struct
+									process));
+
+		new_process->tid = tid;
+
+		sema_init(&new_process->exit_sema,0);
+		new_process->exit_status = -1;
+		new_process->waited_for = false;
+		new_process->has_exited = false;
+
+		list_push_back(&thread_current()->child_processes, &new_process->elem);
+		t->process_wrapped = new_process;
+	}
+
 	/* Stack frame for kernel_thread(). */
 	kf = alloc_frame (t, sizeof *kf);
 	kf->eip = NULL;
@@ -327,7 +343,7 @@ thread_exit ()
 	//	printf("thread_exit pd: %" PRIu32 "\n", *pd);
 #ifdef USERPROG
 //	printf("threads exit_sema = %d\n", (int)thread_current()->exit_sema.value);
-	sema_up(&thread_current()->exit_sema); /* Stop waiting and exit. */
+//	sema_up(&thread_current()->exit_sema); /* Stop waiting and exit. */
 //	printf("threads exit_sema = %d\n", (int)thread_current()->exit_sema.value);
 	process_exit ();
 #endif
@@ -517,10 +533,10 @@ init_thread (struct thread *t, const char *name, int priority)
 	list_push_back (&all_list, &t->allelem);
 	intr_set_level (old_level);
 
-	//list_init(&(t->fd_table));
+	list_init (&t->child_processes);	/* added and may need to be removed. */
 
 	sema_init (&t->sema,0);
-	sema_init (&t->exit_sema,0);
+	//sema_init (&t->exit_sema,0);
 }
 
 /* Allocates a SIZE-byte frame at the top of thread T's stack and

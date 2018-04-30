@@ -2,6 +2,8 @@
 #define THREADS_THREAD_H
 
 #include "threads/synch.h"
+#include "userprog/process.h"
+#include "userprog/syscall.h"
 #include <debug.h>
 #include <list.h>
 #include <stdint.h>
@@ -98,6 +100,9 @@ struct thread
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
+	
+	struct process *process_wrapped;	/* Don't even ask. */
+	struct list child_processes; 		/* The list of child processes. */
 
 
 #ifdef USERPROG

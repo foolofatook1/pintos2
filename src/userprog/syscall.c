@@ -108,7 +108,7 @@ valid_pointer_check(void *esp)
 	static int 
 halt (void)
 {
-	printf("\n\nGOODBYE!\n\n");
+	//printf("\n\nGOODBYE!\n\n");
 	shutdown_power_off();
 	NOT_REACHED();
 }
@@ -147,7 +147,7 @@ syscall_handler (struct intr_frame *f UNUSED)
 		return;
 	}
 
-	printf("%d\n\n", sys_code);
+	//printf("%d\n\n", sys_code);
 	switch(sys_code)
 	{
 		case SYS_HALT:
