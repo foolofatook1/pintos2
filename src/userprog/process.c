@@ -94,11 +94,6 @@ start_process (void *file_name_)
 	int
 process_wait (tid_t child_tid UNUSED) 
 {
-//	while(true)
-//	{
-//		thread_yield();
-//	}
-
 	struct list_elem *it;
 	struct process *pr = NULL;
 	for(it = list_begin(&thread_current()->child_processes);
@@ -114,15 +109,6 @@ process_wait (tid_t child_tid UNUSED)
 	
 	sema_down(&pr->exit_sema);
 	return pr->exit_status;
-
-/* need to make sure thread exit does a sema_up() on parent process. */
-	/*printf("1 thread_current()->exit_sema = %d\n", 
-		(int)thread_current()->exit_sema.value);
-	sema_down(&thread_current()->exit_sema);
-	printf("2 thread_current()->exit_sema = %d\n", 
-		(int)thread_current()->exit_sema.value);*/
-
-	return 0;
 }
 
 /* Kills current process. */

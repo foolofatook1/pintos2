@@ -23,6 +23,9 @@ static bool put_user (uint8_t *udst, uint8_t byte);
 static bool valid_pointer_check(void *esp);
 static int halt (void);
 static int exit (int status);
+static int exec (const char *file);
+static int wait (int thread_id);
+static bool create (const char *file, unsigned initial_size);
 static int write (int fd, const void *buffer, unsigned length);
 static void pointer_check(void *esp);
 static void pointer_check_range(const void *start, off_t length);
@@ -38,6 +41,14 @@ syscall_init (void)
 f->eax = function ( \
 		*((type1*) (f->esp)) \
 		);
+
+#define GET_ARGS2(type1, type2, function) \
+	pointer_check(f->esp+4); \
+	pointer_check(f->esp+8); \
+	f->eax = function ( \
+	*((type1*) (f->esp+4)), \
+	*((type2*) (f->esp+8)) \
+	);
 
 #define GET_ARGS3(type1, type2, type3, function) \
 	pointer_check(f->esp+4); \
@@ -116,7 +127,7 @@ halt (void)
 	static int
 exit (int status)
 {
-	thread_current()->exit_status = status;
+	thread_current()->process_wrapped->exit_status = status;
 	process_kill ();
 	NOT_REACHED();
 }
@@ -133,6 +144,47 @@ write (int fd, const void *buffer_, unsigned length)
 	}
 	else
 		return -1;
+}
+
+/* Runs the executable given in command line. */
+	static int
+exec (const char *file)
+{
+	pointer_check(file);
+
+	int child_tid = process_execute(file);
+
+	if(child_tid < 0)
+		return -1;
+
+	struct list_elem *it;
+	struct process *pr = NULL;
+	for (it = list_begin(&thread_current()->child_processes);
+			it != list_end(&thread_current()->child_processes);
+			it = list_next(it))
+	{
+		pr = list_entry(it, struct process, elem);
+		if(pr->tid == child_tid)
+			break;
+	}
+
+	return child_tid;
+}
+
+	static int 
+wait (int thread_id)
+{
+	return process_wait(thread_id);
+}
+
+	static bool
+create (const char *file, unsigned initial_size)
+{
+	pointer_check(file);
+
+	bool ret = filesys_create(file, initial_size);
+
+	return ret;
 }
 
 	static void
@@ -158,6 +210,21 @@ syscall_handler (struct intr_frame *f UNUSED)
 		case SYS_EXIT:
 			{
 				GET_ARGS1(int, exit);
+				break;
+			}
+		case SYS_EXEC:
+			{
+				GET_ARGS1(const char *, exec);
+				break;
+			}
+		case SYS_WAIT:
+			{
+				GET_ARGS1(int, wait);
+				break;
+			}
+		case SYS_CREATE:
+			{
+				GET_ARGS2(const char *, unsigned, create);
 				break;
 			}
 		case SYS_WRITE:
