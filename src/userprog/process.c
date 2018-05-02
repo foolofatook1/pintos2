@@ -18,6 +18,9 @@
 #include "threads/thread.h"
 #include "threads/vaddr.h"
 
+/* 4kB */
+#define MAX_ARG_SIZE 4096
+
 static thread_func start_process NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
 
@@ -47,6 +50,70 @@ process_execute (const char *file_name)
 	return tid;
 }
 
+	static void
+stack_push(uint32_t *arg, void *esp_)
+{
+	uint32_t **esp = (uint32_t**)esp_;
+	*esp = arg;
+}
+
+	static char *
+dump_word(char *word, char *first_pos)
+{
+	int i;
+	for(i = 0; word[i]!='\0'; i++);
+	for(; i>= 0; i--)
+	{
+		first_pos--;
+		*first_pos = word[i];
+	}
+	return first_pos;
+}
+
+	static void
+push_args_on_stack(struct intr_frame * intr_frame, int argc, char ** argv)
+{
+  uint32_t * ptrs[argc]; // Pointers to the first character of an argument
+  int i;
+
+  /* (1) This will iterate through the list of arguments and push them onto the
+         stack (keeps track of number of arguments) */
+  char * word_pointer = (char*) intr_frame->esp;
+  for (i = argc-1; i >= 0; i--) {
+    word_pointer = dump_word(argv[i], word_pointer);
+    ptrs[i] = (uint32_t *) word_pointer;
+  }
+
+  // (2) Then it aligns the memory (word align)
+  while ((unsigned) word_pointer % 4 != 0) {
+    word_pointer --;
+  }
+
+  intr_frame->esp = word_pointer;
+
+  // (3) Then it will push a null pointer onto the stack
+  intr_frame->esp -= 4;
+  stack_push(0, intr_frame->esp);
+
+  // (4) then it will push the pointers to the arguments on the stack
+  for (i=argc-1; i>=0; i--) {
+    intr_frame->esp -= 4;
+    stack_push(ptrs[i], intr_frame->esp);
+  }
+
+  // (5) Then it pushes argv (the pointer to the array of pointers to args)
+  intr_frame->esp -=4;
+  stack_push(intr_frame->esp+4, intr_frame->esp);
+
+  // (6) then it will push the number of arguments onto the stack (argc)
+  intr_frame->esp -= 4;
+  stack_push((uint32_t*) argc, intr_frame->esp);
+
+  // (7) Push a fake return address (0) onto the stack
+  intr_frame->esp -= 4;
+  stack_push(0, intr_frame->esp);
+}
+
 /* A thread function that loads a user process and starts it
    running. */
 	static void
@@ -56,9 +123,30 @@ start_process (void *file_name_)
 	struct intr_frame if_;
 	bool success;
 
-	/* Get actual file name. */
-	/*	char *save_ptr;
-		file_name = strtok_r(file_name, " ", &save_ptr);*/
+	if(strlen(file_name)+1 > MAX_ARG_SIZE)
+	{
+		free(file_name);
+		PANIC ("ERROR: Command line argument is too long.");
+		process_kill ();
+	}
+
+	int argc = 0;
+	char *token, *save_ptr;
+	char cpy[strlen(file_name)+1];
+	strlcpy(cpy, file_name, strlen(file_name)+1);
+
+	for (token = strtok_r(cpy, " ", &save_ptr);
+		token != NULL;
+		token = strtok_r(NULL, " ", &save_ptr))
+		argc++;
+
+	char *argv[argc];
+	int i = 0;
+	argv[0] = strtok_r (file_name, " ", &save_ptr);
+	for(token = strtok_r (NULL, " ", &save_ptr), i = 1;
+		token != NULL;
+		token = strtok_r (NULL, " ", &save_ptr), i++)
+		argv[i] = token;
 
 	/* Initialize interrupt frame and load executable. */
 	memset (&if_, 0, sizeof if_);
@@ -67,10 +155,19 @@ start_process (void *file_name_)
 	if_.eflags = FLAG_IF | FLAG_MBS;
 	success = load (file_name, &if_.eip, &if_.esp);
 
+	if (thread_current()->tid >= 3)
+	{
+		if(!success)
+			thread_current()->process_wrapped->load_fail = true;
+		sema_up(&thread_current()->process_wrapped->load_sema);
+	}
+	
+	push_args_on_stack(&if_, argc, argv);
+
 	/* If load failed, quit. */
 	palloc_free_page (file_name);
 	if (!success) 
-		thread_exit ();
+		process_kill ();
 
 	/* Start the user process by simulating a return from an
 	   interrupt, implemented by intr_exit (in
@@ -106,8 +203,21 @@ process_wait (tid_t child_tid UNUSED)
 	}
 	if(pr == NULL)
 		return -1;
+
+	if (pr->waited_for == true)
+		return -1;
+
 	
+//	if(pr->exit_status != -100)
+//		return pr->exit_status;
+
+
+	pr->waited_for = true;
+
 	sema_down(&pr->exit_sema);
+//	list_remove(it);
+//	int result = pr->exit_status;
+//	palloc_free_page(pr);
 	return pr->exit_status;
 }
 
@@ -118,6 +228,18 @@ process_kill (void)
 	thread_current()->exit_status = 0;
 	thread_exit ();
 }
+
+/*static void
+free_child_processes(struct thread *cur)
+{
+	enum intr_level old_level = intr_disable();
+
+	struct list_elem *it;
+	struct list_elem *aux;
+	for(it = list_begin(cur->child_processes);
+		it != list_end(cur->child_processes);
+		it = list_next(it))*/
+
 /* Free the current process's resources. */
 	void
 process_exit (void)
@@ -136,7 +258,8 @@ process_exit (void)
 		printf("%s: exit(%d)\n", name, cur->exit_status);
 		sema_up(&thread_current()->process_wrapped->exit_sema);
 	}
-
+	
+	//free_child_processes(cur);
 	/* Destroy the current process's page directory and switch back
 	   to the kernel-only page directory. */
 	pd = cur->pagedir;
@@ -261,14 +384,11 @@ load (const char *file_name, void (**eip) (void), void **esp)
 	char *token, *save_ptr;
 	int argc = 0;
 	char *argv[MAX_SIZE];
-	//char file_name_copy[100];
-	//strlcpy(file_name_copy, file_name, 100);
-	//get_args(file_name_copy, argv, &argc);
+	
 	/* Parse command into argv[]. */
 	for(token = strtok_r((char *)file_name, " ", &save_ptr); token != NULL;
 	  token = strtok_r(NULL, " ", &save_ptr))
 	{
-	//  printf("%s\n", 
 	  argv[argc++] = token;
 	}
 
@@ -536,17 +656,6 @@ setup_stack (void **esp, char **argv, int argc)
 
 	return success;
 }
-
-//	void
-//get_args(char *cmd_string, char **argv, int *argc)
-//{
-//	char *save_ptr;
-//	argv[0] = strtok_r(cmd_string, " ", &save_ptr);
-//	char *token; 
-//	*argc = 1;
-//	while((token = strtok_r(NULL, " ", &save_ptr))!=NULL)
-//		argv[(*argc)++] = token;
-//}
 
 /* Adds a mapping from user virtual address UPAGE to kernel
    virtual address KPAGE to the page table.

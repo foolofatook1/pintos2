@@ -230,9 +230,11 @@ thread_create (const char *name, int priority,
 		new_process->tid = tid;
 
 		sema_init(&new_process->exit_sema,0);
-		new_process->exit_status = -1;
+		sema_init(&new_process->load_sema,0);
+		new_process->exit_status = -100;
 		new_process->waited_for = false;
 		new_process->has_exited = false;
+		new_process->load_fail = false;
 
 		list_push_back(&thread_current()->child_processes, &new_process->elem);
 		t->process_wrapped = new_process;
@@ -534,6 +536,7 @@ init_thread (struct thread *t, const char *name, int priority)
 	intr_set_level (old_level);
 
 	list_init (&t->child_processes);	/* added and may need to be removed. */
+	list_init(&(t->fd_table));
 
 	sema_init (&t->sema,0);
 	//sema_init (&t->exit_sema,0);

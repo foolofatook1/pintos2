@@ -26,14 +26,33 @@ static int exit (int status);
 static int exec (const char *file);
 static int wait (int thread_id);
 static bool create (const char *file, unsigned initial_size);
-static int write (int fd, const void *buffer, unsigned length);
+static bool remove(const char *file);
+static int open (const char *file);
 static void pointer_check(void *esp);
 static void pointer_check_range(const void *start, off_t length);
+static size_t filesize (int fd);
+static size_t read (int fd, void *buffer_, off_t length);
+static int write (int fd, const void *buffer, unsigned length);
+static int seek (int fd, unsigned position);
+static unsigned tell (int fd);
+static int close (int fd);
+
+static struct file *get_file(int fd);
+
+static struct lock filesys_lock;
+
+struct fd_list_node
+{
+	int fd;
+	struct file *file;
+	struct list_elem elem;
+};
 
 	void
 syscall_init (void) 
 {
 	intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
+	lock_init (&filesys_lock);
 }
 
 #define GET_ARGS1(type1, function) \
@@ -44,11 +63,11 @@ f->eax = function ( \
 
 #define GET_ARGS2(type1, type2, function) \
 	pointer_check(f->esp+4); \
-	pointer_check(f->esp+8); \
-	f->eax = function ( \
-	*((type1*) (f->esp+4)), \
-	*((type2*) (f->esp+8)) \
-	);
+pointer_check(f->esp+8); \
+f->eax = function ( \
+		*((type1*) (f->esp+4)), \
+		*((type2*) (f->esp+8)) \
+		);
 
 #define GET_ARGS3(type1, type2, type3, function) \
 	pointer_check(f->esp+4); \
@@ -168,6 +187,10 @@ exec (const char *file)
 			break;
 	}
 
+	sema_down (&pr->load_sema);
+	if(pr->load_fail)
+		return -1;
+
 	return child_tid;
 }
 
@@ -182,9 +205,172 @@ create (const char *file, unsigned initial_size)
 {
 	pointer_check(file);
 
+	lock_acquire(&filesys_lock);
 	bool ret = filesys_create(file, initial_size);
+	lock_release(&filesys_lock);
 
 	return ret;
+}
+
+	static bool
+remove(const char *file)
+{
+	pointer_check(file);
+
+	lock_acquire(&filesys_lock);
+	filesys_remove(file);
+	lock_release(&filesys_lock);
+
+	return true;
+}
+
+	int
+allocate_fd (void)
+{
+	static struct lock fd_lock;
+	lock_init(&fd_lock);
+
+	static int next_fd = 2;
+	int fd;
+
+	lock_acquire (&fd_lock);
+	fd = next_fd++;
+	lock_release (&fd_lock);
+
+	return fd;
+}
+	static int
+open (const char *file)
+{
+	pointer_check(file);
+
+	lock_acquire(&filesys_lock);
+	struct file *new_file = filesys_open(file);
+	lock_release(&filesys_lock);
+
+	if (new_file == NULL)
+		return -1;
+	if (strcmp(file, thread_current()->name) == 0)
+		file_deny_write(new_file);
+
+	/* this should all be one method. */
+	struct fd_list_node *new_fd = (struct fd_list_node *) 
+		malloc(sizeof(struct fd_list_node));
+	new_fd->fd = allocate_fd();
+	new_fd->file = new_file;
+	list_push_back(&(thread_current()->fd_table), &(new_fd->elem));
+	return new_fd->fd;
+
+}
+
+	static struct file *
+get_file (int fd)
+{
+	struct list_elem *itp;
+	struct fd_list_node *ep = NULL;
+
+	for (itp = list_begin(&thread_current()->fd_table);
+			itp != list_end(&thread_current()->fd_table);
+			itp = list_next(itp))
+	{
+		ep = list_entry(itp, struct fd_list_node, elem);
+		if (ep->fd == fd)
+			return ep->file;
+	}
+	return NULL;
+}
+
+	static size_t
+filesize (int fd)
+{
+	struct file*file = get_file(fd);
+
+	if(file == NULL)
+	{
+		return 0;
+	}
+
+	lock_acquire(&filesys_lock);
+	off_t ret = file_length(file);
+	lock_release(&filesys_lock);
+
+	return ret;
+}
+
+	static size_t
+read (int fd, void *buffer_, off_t length)
+{
+	if(length < 0 || fd == 1)
+		return -1;
+
+	pointer_check(buffer_);
+
+	char *buffer = (char *)(buffer_);
+	if(fd == 0)
+	{
+		int i;
+		for(i = 0; i < length; ++i)
+			buffer[i] = input_getc();
+		return length;
+	}
+	else
+	{
+		struct file *f = get_file(fd);
+		if(f == NULL)
+			return -1;
+		lock_acquire(&filesys_lock);
+		off_t ret = file_read(f, buffer, length);
+		lock_release(&filesys_lock);
+	
+		return ret;
+	}
+}
+
+	static int 
+seek (int fd, unsigned position)
+{
+	struct file *f = get_file(fd);
+
+	if (f == NULL)
+		return 0;
+
+	f->pos = position;
+	return 0;
+}
+
+	static unsigned
+tell (int fd)
+{
+	struct file *f = get_file(fd);
+
+	if(f == NULL)
+		return -1;
+	
+	return f->pos;
+}
+
+	static int
+close (int fd)
+{
+	struct list_elem *itp;
+	struct fd_list_node *ep = NULL;
+	
+	for (itp = list_begin(&thread_current()->fd_table);
+			itp != list_end(&thread_current()->fd_table);
+			itp = list_next(itp))
+	{
+		if(ep->fd == fd)
+			break;
+	}
+	if(ep != NULL)
+	{
+		list_remove(&(ep->elem));
+		lock_acquire(&filesys_lock);
+		file_close(ep->file);
+		lock_release(&filesys_lock);
+		free(ep);
+	}
+	return 0;
 }
 
 	static void
@@ -199,7 +385,6 @@ syscall_handler (struct intr_frame *f UNUSED)
 		return;
 	}
 
-	//printf("%d\n\n", sys_code);
 	switch(sys_code)
 	{
 		case SYS_HALT:
@@ -227,9 +412,44 @@ syscall_handler (struct intr_frame *f UNUSED)
 				GET_ARGS2(const char *, unsigned, create);
 				break;
 			}
+		case SYS_REMOVE:
+			{
+				GET_ARGS1(const char *, remove);
+				break;
+			}
+		case SYS_OPEN:
+			{
+				GET_ARGS1(const char *, open);
+				break;
+			}
+		case SYS_FILESIZE:
+			{
+				GET_ARGS1(int, filesize);
+				break;
+			}
+		case SYS_READ:
+			{
+				GET_ARGS3(int, int, off_t, read);
+				break;
+			}
 		case SYS_WRITE:
 			{
 				GET_ARGS3(int, void *, unsigned, write);
+				break;
+			}
+		case SYS_SEEK:
+			{
+				GET_ARGS2(int, unsigned, seek);
+				break;
+			}
+		case SYS_TELL:
+			{
+				GET_ARGS1(int, tell);
+				break;
+			}
+		case SYS_CLOSE:
+			{
+				GET_ARGS1(int, close);
 				break;
 			}
 	}

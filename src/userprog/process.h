@@ -14,10 +14,12 @@ struct process
 	
 	struct list_elem elem;
 	struct semaphore exit_sema;
+	struct semaphore load_sema;
 	
 	int exit_status;
 	bool waited_for;
 	bool has_exited;
+	bool load_fail;
 };
 
 tid_t process_execute (const char *file_name);

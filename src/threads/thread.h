@@ -101,13 +101,15 @@ struct thread
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
 	
-	struct process *process_wrapped;	/* Don't even ask. */
-	struct list child_processes; 		/* The list of child processes. */
-
+	
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
+
+	struct process *process_wrapped;	/* Don't even ask. */
+	struct list child_processes; 		/* The list of child processes. */
+	struct list fd_table;				/* List of file descriptors. */
 
 	//struct list fd_table;				/* List of file descriptors. */
 	int exit_status;
