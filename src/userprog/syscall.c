@@ -57,23 +57,23 @@ syscall_init (void)
 
 #define GET_ARGS1(type1, function) \
 	pointer_check(f->esp+4); \
-f->eax = function ( \
+	f->eax = function ( \
 		*((type1*) (f->esp+4)) \
 		);
 
 #define GET_ARGS2(type1, type2, function) \
 	pointer_check(f->esp+4); \
-pointer_check(f->esp+8); \
-f->eax = function ( \
+	pointer_check(f->esp+8); \
+	f->eax = function ( \
 		*((type1*) (f->esp+4)), \
 		*((type2*) (f->esp+8)) \
 		);
 
 #define GET_ARGS3(type1, type2, type3, function) \
 	pointer_check(f->esp+4); \
-pointer_check(f->esp+8); \
-pointer_check(f->esp+12); \
-f->eax = function ( \
+	pointer_check(f->esp+8); \
+	pointer_check(f->esp+12); \
+	f->eax = function ( \
 		*((type1*)(f->esp+4)), \
 		(void*) *((uint32_t*) (f->esp+8)), \
 		*((type3*) (f->esp+12)) \

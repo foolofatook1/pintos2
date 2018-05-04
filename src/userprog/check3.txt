@@ -98,11 +98,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/sc-bad-sp -a sc-ba
 perl -I../.. ../../tests/userprog/sc-bad-sp.ck tests/userprog/sc-bad-sp tests/userprog/sc-bad-sp.result
 FAIL tests/userprog/sc-bad-sp
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x80480aa
+Call stack: 0xc002890f 0xc002bf8a 0x80480aa
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002bf8a: get_user (...../userprog/syscall.c:112)
 In tests/userprog/sc-bad-sp:
 0x080480aa: test_main (...s/userprog/sc-bad-sp.c:19)
 Translations of user virtual addresses above are based on a guess at
@@ -112,45 +112,18 @@ gcc -m32 -c ../../tests/userprog/sc-bad-arg.c -o tests/userprog/sc-bad-arg.o -g 
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/sc-bad-arg.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/sc-bad-arg
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/sc-bad-arg -a sc-bad-arg -- -q  -f run sc-bad-arg < /dev/null 2> tests/userprog/sc-bad-arg.errors > tests/userprog/sc-bad-arg.output
 perl -I../.. ../../tests/userprog/sc-bad-arg.ck tests/userprog/sc-bad-arg tests/userprog/sc-bad-arg.result
-FAIL tests/userprog/sc-bad-arg
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (sc-bad-arg) begin
-  sc-bad-arg: exit(-1)
-Differences in `diff -u' format:
-  (sc-bad-arg) begin
-- sc-bad-arg: exit(-1)
-+ sc-bad-arg: exit(0)
+pass tests/userprog/sc-bad-arg
 gcc -m32 -c ../../tests/userprog/sc-boundary.c -o tests/userprog/sc-boundary.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/sc-boundary.d
 gcc -m32 -c ../../tests/userprog/boundary.c -o tests/userprog/boundary.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/boundary.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/sc-boundary.o tests/userprog/boundary.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/sc-boundary
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/sc-boundary -a sc-boundary -- -q  -f run sc-boundary < /dev/null 2> tests/userprog/sc-boundary.errors > tests/userprog/sc-boundary.output
 perl -I../.. ../../tests/userprog/sc-boundary.ck tests/userprog/sc-boundary tests/userprog/sc-boundary.result
-FAIL tests/userprog/sc-boundary
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (sc-boundary) begin
-  sc-boundary: exit(42)
-Differences in `diff -u' format:
-  (sc-boundary) begin
-- sc-boundary: exit(42)
-+ sc-boundary: exit(0)
+pass tests/userprog/sc-boundary
 gcc -m32 -c ../../tests/userprog/sc-boundary-2.c -o tests/userprog/sc-boundary-2.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/sc-boundary-2.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/sc-boundary-2.o tests/userprog/boundary.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/sc-boundary-2
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/sc-boundary-2 -a sc-boundary-2 -- -q  -f run sc-boundary-2 < /dev/null 2> tests/userprog/sc-boundary-2.errors > tests/userprog/sc-boundary-2.output
 perl -I../.. ../../tests/userprog/sc-boundary-2.ck tests/userprog/sc-boundary-2 tests/userprog/sc-boundary-2.result
-FAIL tests/userprog/sc-boundary-2
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (sc-boundary-2) begin
-  sc-boundary-2: exit(67)
-Differences in `diff -u' format:
-  (sc-boundary-2) begin
-- sc-boundary-2: exit(67)
-+ sc-boundary-2: exit(0)
+pass tests/userprog/sc-boundary-2
 gcc -m32 -c ../../tests/userprog/sc-boundary-3.c -o tests/userprog/sc-boundary-3.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/sc-boundary-3.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/sc-boundary-3.o tests/userprog/boundary.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/sc-boundary-3
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/sc-boundary-3 -a sc-boundary-3 -- -q  -f run sc-boundary-3 < /dev/null 2> tests/userprog/sc-boundary-3.errors > tests/userprog/sc-boundary-3.output
@@ -161,7 +134,7 @@ Call stack: 0xc002890f 0xc002c039 0x80480b1
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002c039: syscall_handler (...../userprog/syscall.c:413)
+0xc002c039: syscall_handler (...../userprog/syscall.c:415)
 In tests/userprog/sc-boundary-3:
 0x080480b1: test_main (...erprog/sc-boundary-3.c:19)
 Translations of user virtual addresses above are based on a guess at
@@ -176,16 +149,7 @@ gcc -m32 -c ../../tests/userprog/exit.c -o tests/userprog/exit.o -g -msoft-float
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/exit.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/exit
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exit -a exit -- -q  -f run exit < /dev/null 2> tests/userprog/exit.errors > tests/userprog/exit.output
 perl -I../.. ../../tests/userprog/exit.ck tests/userprog/exit tests/userprog/exit.result
-FAIL tests/userprog/exit
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (exit) begin
-  exit: exit(57)
-Differences in `diff -u' format:
-  (exit) begin
-- exit: exit(57)
-+ exit: exit(0)
+pass tests/userprog/exit
 gcc -m32 -c ../../tests/userprog/create-normal.c -o tests/userprog/create-normal.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/create-normal.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/create-normal.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/create-normal
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/create-normal -a create-normal -- -q  -f run create-normal < /dev/null 2> tests/userprog/create-normal.errors > tests/userprog/create-normal.output
@@ -200,27 +164,18 @@ gcc -m32 -c ../../tests/userprog/create-null.c -o tests/userprog/create-null.o -
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/create-null.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/create-null
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/create-null -a create-null -- -q  -f run create-null < /dev/null 2> tests/userprog/create-null.errors > tests/userprog/create-null.output
 perl -I../.. ../../tests/userprog/create-null.ck tests/userprog/create-null tests/userprog/create-null.result
-FAIL tests/userprog/create-null
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (create-null) begin
-  create-null: exit(-1)
-Differences in `diff -u' format:
-  (create-null) begin
-- create-null: exit(-1)
-+ create-null: exit(0)
+pass tests/userprog/create-null
 gcc -m32 -c ../../tests/userprog/create-bad-ptr.c -o tests/userprog/create-bad-ptr.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/create-bad-ptr.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/create-bad-ptr.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/create-bad-ptr
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/create-bad-ptr -a create-bad-ptr -- -q  -f run create-bad-ptr < /dev/null 2> tests/userprog/create-bad-ptr.errors > tests/userprog/create-bad-ptr.output
 perl -I../.. ../../tests/userprog/create-bad-ptr.ck tests/userprog/create-bad-ptr tests/userprog/create-bad-ptr.result
 FAIL tests/userprog/create-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a462
+Call stack: 0xc002890f 0xc002bf8a 0x804a462
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002bf8a: get_user (...../userprog/syscall.c:112)
 In tests/userprog/create-bad-ptr:
 0x0804a462: create (.../../lib/user/syscall.c:93)
 Translations of user virtual addresses above are based on a guess at
@@ -245,93 +200,38 @@ gcc -m32 -c ../../tests/userprog/open-normal.c -o tests/userprog/open-normal.o -
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/open-normal.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/open-normal
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-normal -a open-normal -p ../../tests/userprog/sample.txt -a sample.txt -- -q  -f run open-normal < /dev/null 2> tests/userprog/open-normal.errors > tests/userprog/open-normal.output
 perl -I../.. ../../tests/userprog/open-normal.ck tests/userprog/open-normal tests/userprog/open-normal.result
-FAIL tests/userprog/open-normal
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a474
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/open-normal:
-0x0804a474: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/open-normal
 gcc -m32 -c ../../tests/userprog/open-missing.c -o tests/userprog/open-missing.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/open-missing.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/open-missing.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/open-missing
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-missing -a open-missing -- -q  -f run open-missing < /dev/null 2> tests/userprog/open-missing.errors > tests/userprog/open-missing.output
 perl -I../.. ../../tests/userprog/open-missing.ck tests/userprog/open-missing tests/userprog/open-missing.result
-FAIL tests/userprog/open-missing
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a474
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/open-missing:
-0x0804a474: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/open-missing
 gcc -m32 -c ../../tests/userprog/open-boundary.c -o tests/userprog/open-boundary.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/open-boundary.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/open-boundary.o tests/userprog/boundary.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/open-boundary
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-boundary -a open-boundary -p ../../tests/userprog/sample.txt -a sample.txt -- -q  -f run open-boundary < /dev/null 2> tests/userprog/open-boundary.errors > tests/userprog/open-boundary.output
 perl -I../.. ../../tests/userprog/open-boundary.ck tests/userprog/open-boundary tests/userprog/open-boundary.result
-FAIL tests/userprog/open-boundary
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a534
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/open-boundary:
-0x0804a534: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/open-boundary
 gcc -m32 -c ../../tests/userprog/open-empty.c -o tests/userprog/open-empty.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/open-empty.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/open-empty.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/open-empty
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-empty -a open-empty -- -q  -f run open-empty < /dev/null 2> tests/userprog/open-empty.errors > tests/userprog/open-empty.output
 perl -I../.. ../../tests/userprog/open-empty.ck tests/userprog/open-empty tests/userprog/open-empty.result
-FAIL tests/userprog/open-empty
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a474
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/open-empty:
-0x0804a474: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/open-empty
 gcc -m32 -c ../../tests/userprog/open-null.c -o tests/userprog/open-null.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/open-null.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/open-null.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/open-null
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-null -a open-null -- -q  -f run open-null < /dev/null 2> tests/userprog/open-null.errors > tests/userprog/open-null.output
 perl -I../.. ../../tests/userprog/open-null.ck tests/userprog/open-null tests/userprog/open-null.result
-FAIL tests/userprog/open-null
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a464
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/open-null:
-0x0804a464: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/open-null
 gcc -m32 -c ../../tests/userprog/open-bad-ptr.c -o tests/userprog/open-bad-ptr.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/open-bad-ptr.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/open-bad-ptr.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/open-bad-ptr
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-bad-ptr -a open-bad-ptr -- -q  -f run open-bad-ptr < /dev/null 2> tests/userprog/open-bad-ptr.errors > tests/userprog/open-bad-ptr.output
 perl -I../.. ../../tests/userprog/open-bad-ptr.ck tests/userprog/open-bad-ptr tests/userprog/open-bad-ptr.result
 FAIL tests/userprog/open-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a474
+Call stack: 0xc002890f 0xc002bf8a 0x804a474
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002bf8a: get_user (...../userprog/syscall.c:112)
 In tests/userprog/open-bad-ptr:
 0x0804a474: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -341,31 +241,20 @@ gcc -m32 -c ../../tests/userprog/open-twice.c -o tests/userprog/open-twice.o -g 
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/open-twice.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/open-twice
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-twice -a open-twice -p ../../tests/userprog/sample.txt -a sample.txt -- -q  -f run open-twice < /dev/null 2> tests/userprog/open-twice.errors > tests/userprog/open-twice.output
 perl -I../.. ../../tests/userprog/open-twice.ck tests/userprog/open-twice tests/userprog/open-twice.result
-FAIL tests/userprog/open-twice
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a4d4
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/open-twice:
-0x0804a4d4: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/open-twice
 gcc -m32 -c ../../tests/userprog/close-normal.c -o tests/userprog/close-normal.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/close-normal.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/close-normal.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/close-normal
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/close-normal -a close-normal -p ../../tests/userprog/sample.txt -a sample.txt -- -q  -f run close-normal < /dev/null 2> tests/userprog/close-normal.errors > tests/userprog/close-normal.output
 perl -I../.. ../../tests/userprog/close-normal.ck tests/userprog/close-normal tests/userprog/close-normal.result
 FAIL tests/userprog/close-normal
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a494
+Call stack: 0xc002890f 0xc002c4ac 0x804a4f8
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 In tests/userprog/close-normal:
-0x0804a494: open (...../lib/user/syscall.c:105)
+0x0804a4f8: close (...../lib/user/syscall.c:141)
 Translations of user virtual addresses above are based on a guess at
 the binary to use.  If this guess is incorrect, then those
 translations will be misleading.
@@ -375,13 +264,13 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/close-twice -a clo
 perl -I../.. ../../tests/userprog/close-twice.ck tests/userprog/close-twice tests/userprog/close-twice.result
 FAIL tests/userprog/close-twice
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a4a4
+Call stack: 0xc002890f 0xc002c4ac 0x804a508
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 In tests/userprog/close-twice:
-0x0804a4a4: open (...../lib/user/syscall.c:105)
+0x0804a508: close (...../lib/user/syscall.c:141)
 Translations of user virtual addresses above are based on a guess at
 the binary to use.  If this guess is incorrect, then those
 translations will be misleading.
@@ -406,13 +295,13 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/read-normal -a rea
 perl -I../.. ../../tests/userprog/read-normal.ck tests/userprog/read-normal tests/userprog/read-normal.result
 FAIL tests/userprog/read-normal
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a474
+Call stack: 0xc002890f 0xc002c4ac 0x804a4d8
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 In tests/userprog/read-normal:
-0x0804a474: open (...../lib/user/syscall.c:105)
+0x0804a4d8: close (...../lib/user/syscall.c:141)
 Translations of user virtual addresses above are based on a guess at
 the binary to use.  If this guess is incorrect, then those
 translations will be misleading.
@@ -420,50 +309,17 @@ gcc -m32 -c ../../tests/userprog/read-bad-ptr.c -o tests/userprog/read-bad-ptr.o
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/read-bad-ptr.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/read-bad-ptr
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/read-bad-ptr -a read-bad-ptr -p ../../tests/userprog/sample.txt -a sample.txt -- -q  -f run read-bad-ptr < /dev/null 2> tests/userprog/read-bad-ptr.errors > tests/userprog/read-bad-ptr.output
 perl -I../.. ../../tests/userprog/read-bad-ptr.ck tests/userprog/read-bad-ptr tests/userprog/read-bad-ptr.result
-FAIL tests/userprog/read-bad-ptr
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a4a4
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/read-bad-ptr:
-0x0804a4a4: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/read-bad-ptr
 gcc -m32 -c ../../tests/userprog/read-boundary.c -o tests/userprog/read-boundary.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/read-boundary.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/read-boundary.o tests/userprog/boundary.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/read-boundary
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/read-boundary -a read-boundary -p ../../tests/userprog/sample.txt -a sample.txt -- -q  -f run read-boundary < /dev/null 2> tests/userprog/read-boundary.errors > tests/userprog/read-boundary.output
 perl -I../.. ../../tests/userprog/read-boundary.ck tests/userprog/read-boundary tests/userprog/read-boundary.result
-FAIL tests/userprog/read-boundary
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a5b4
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/read-boundary:
-0x0804a5b4: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/read-boundary
 gcc -m32 -c ../../tests/userprog/read-zero.c -o tests/userprog/read-zero.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/read-zero.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/read-zero.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/read-zero
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/read-zero -a read-zero -p ../../tests/userprog/sample.txt -a sample.txt -- -q  -f run read-zero < /dev/null 2> tests/userprog/read-zero.errors > tests/userprog/read-zero.output
 perl -I../.. ../../tests/userprog/read-zero.ck tests/userprog/read-zero tests/userprog/read-zero.result
-FAIL tests/userprog/read-zero
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a4c4
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/read-zero:
-0x0804a4c4: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/read-zero
 gcc -m32 -c ../../tests/userprog/read-stdout.c -o tests/userprog/read-stdout.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/read-stdout.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/read-stdout.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/read-stdout
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/read-stdout -a read-stdout -- -q  -f run read-stdout < /dev/null 2> tests/userprog/read-stdout.errors > tests/userprog/read-stdout.output
@@ -478,66 +334,27 @@ gcc -m32 -c ../../tests/userprog/write-normal.c -o tests/userprog/write-normal.o
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/write-normal.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/write-normal
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/write-normal -a write-normal -p ../../tests/userprog/sample.txt -a sample.txt -- -q  -f run write-normal < /dev/null 2> tests/userprog/write-normal.errors > tests/userprog/write-normal.output
 perl -I../.. ../../tests/userprog/write-normal.ck tests/userprog/write-normal tests/userprog/write-normal.result
-FAIL tests/userprog/write-normal
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a4e4
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/write-normal:
-0x0804a4e4: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/write-normal
 gcc -m32 -c ../../tests/userprog/write-bad-ptr.c -o tests/userprog/write-bad-ptr.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/write-bad-ptr.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/write-bad-ptr.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/write-bad-ptr
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/write-bad-ptr -a write-bad-ptr -p ../../tests/userprog/sample.txt -a sample.txt -- -q  -f run write-bad-ptr < /dev/null 2> tests/userprog/write-bad-ptr.errors > tests/userprog/write-bad-ptr.output
 perl -I../.. ../../tests/userprog/write-bad-ptr.ck tests/userprog/write-bad-ptr tests/userprog/write-bad-ptr.result
 FAIL tests/userprog/write-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a4a4
+Call stack: 0xc002890f 0xc002bf8a
 Translation of call stack:
-In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/write-bad-ptr:
-0x0804a4a4: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+0xc002bf8a: get_user (...../userprog/syscall.c:112)
 gcc -m32 -c ../../tests/userprog/write-boundary.c -o tests/userprog/write-boundary.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/write-boundary.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/write-boundary.o tests/userprog/boundary.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/write-boundary
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/write-boundary -a write-boundary -p ../../tests/userprog/sample.txt -a sample.txt -- -q  -f run write-boundary < /dev/null 2> tests/userprog/write-boundary.errors > tests/userprog/write-boundary.output
 perl -I../.. ../../tests/userprog/write-boundary.ck tests/userprog/write-boundary tests/userprog/write-boundary.result
-FAIL tests/userprog/write-boundary
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a564
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/write-boundary:
-0x0804a564: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/write-boundary
 gcc -m32 -c ../../tests/userprog/write-zero.c -o tests/userprog/write-zero.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/write-zero.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/write-zero.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/write-zero
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/write-zero -a write-zero -p ../../tests/userprog/sample.txt -a sample.txt -- -q  -f run write-zero < /dev/null 2> tests/userprog/write-zero.errors > tests/userprog/write-zero.output
 perl -I../.. ../../tests/userprog/write-zero.ck tests/userprog/write-zero tests/userprog/write-zero.result
-FAIL tests/userprog/write-zero
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a4b4
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/write-zero:
-0x0804a4b4: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/write-zero
 gcc -m32 -c ../../tests/userprog/write-stdin.c -o tests/userprog/write-stdin.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/write-stdin.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/write-stdin.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/write-stdin
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/write-stdin -a write-stdin -- -q  -f run write-stdin < /dev/null 2> tests/userprog/write-stdin.errors > tests/userprog/write-stdin.output
@@ -554,62 +371,29 @@ gcc -m32 -c ../../tests/userprog/child-simple.c -o tests/userprog/child-simple.o
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/child-simple.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/child-simple
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-once -a exec-once -p tests/userprog/child-simple -a child-simple -- -q  -f run exec-once < /dev/null 2> tests/userprog/exec-once.errors > tests/userprog/exec-once.output
 perl -I../.. ../../tests/userprog/exec-once.ck tests/userprog/exec-once tests/userprog/exec-once.result
-FAIL tests/userprog/exec-once
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a424
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/exec-once:
-0x0804a424: exec (.../../lib/user/syscall.c:81)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/exec-once
 gcc -m32 -c ../../tests/userprog/exec-arg.c -o tests/userprog/exec-arg.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/exec-arg.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/exec-arg.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/exec-arg
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/args.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/child-args
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-arg -a exec-arg -p tests/userprog/child-args -a child-args -- -q  -f run exec-arg < /dev/null 2> tests/userprog/exec-arg.errors > tests/userprog/exec-arg.output
 perl -I../.. ../../tests/userprog/exec-arg.ck tests/userprog/exec-arg tests/userprog/exec-arg.result
-FAIL tests/userprog/exec-arg
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a424
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/exec-arg:
-0x0804a424: exec (.../../lib/user/syscall.c:81)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/exec-arg
 gcc -m32 -c ../../tests/userprog/exec-bound.c -o tests/userprog/exec-bound.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/exec-bound.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/exec-bound.o tests/userprog/boundary.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/exec-bound
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-bound -a exec-bound -p tests/userprog/child-args -a child-args -- -q  -f run exec-bound < /dev/null 2> tests/userprog/exec-bound.errors > tests/userprog/exec-bound.output
 perl -I../.. ../../tests/userprog/exec-bound.ck tests/userprog/exec-bound tests/userprog/exec-bound.result
-FAIL tests/userprog/exec-bound
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a4d4
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/exec-bound:
-0x0804a4d4: exec (.../../lib/user/syscall.c:81)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/exec-bound
 gcc -m32 -c ../../tests/userprog/exec-bound-2.c -o tests/userprog/exec-bound-2.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/exec-bound-2.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/exec-bound-2.o tests/userprog/boundary.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/exec-bound-2
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-bound-2 -a exec-bound-2 -- -q  -f run exec-bound-2 < /dev/null 2> tests/userprog/exec-bound-2.errors > tests/userprog/exec-bound-2.output
 perl -I../.. ../../tests/userprog/exec-bound-2.ck tests/userprog/exec-bound-2 tests/userprog/exec-bound-2.result
 FAIL tests/userprog/exec-bound-2
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x80480ba
+Call stack: 0xc002890f 0xc002c08a 0x80480ba
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c08a: syscall_handler (...../userprog/syscall.c:431)
 In tests/userprog/exec-bound-2:
 0x080480ba: test_main (...serprog/exec-bound-2.c:19)
 Translations of user virtual addresses above are based on a guess at
@@ -621,11 +405,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-bound-3 -a ex
 perl -I../.. ../../tests/userprog/exec-bound-3.ck tests/userprog/exec-bound-3 tests/userprog/exec-bound-3.result
 FAIL tests/userprog/exec-bound-3
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a4d4
+Call stack: 0xc002890f 0xc0027e49 0x804a4d4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc0027e49: strlcpy (...ld/../../lib/string.c:333)
 In tests/userprog/exec-bound-3:
 0x0804a4d4: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -635,45 +419,28 @@ gcc -m32 -c ../../tests/userprog/exec-multiple.c -o tests/userprog/exec-multiple
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/exec-multiple.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/exec-multiple
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-multiple -a exec-multiple -p tests/userprog/child-simple -a child-simple -- -q  -f run exec-multiple < /dev/null 2> tests/userprog/exec-multiple.errors > tests/userprog/exec-multiple.output
 perl -I../.. ../../tests/userprog/exec-multiple.ck tests/userprog/exec-multiple tests/userprog/exec-multiple.result
-FAIL tests/userprog/exec-multiple
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a464
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/exec-multiple:
-0x0804a464: exec (.../../lib/user/syscall.c:81)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/exec-multiple
 gcc -m32 -c ../../tests/userprog/exec-missing.c -o tests/userprog/exec-missing.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/exec-missing.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/exec-missing.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/exec-missing
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-missing -a exec-missing -- -q  -f run exec-missing < /dev/null 2> tests/userprog/exec-missing.errors > tests/userprog/exec-missing.output
 perl -I../.. ../../tests/userprog/exec-missing.ck tests/userprog/exec-missing tests/userprog/exec-missing.result
 FAIL tests/userprog/exec-missing
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a434
+Call stack: 0xc002890f 0xc002b22e
 Translation of call stack:
-In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/exec-missing:
-0x0804a434: exec (.../../lib/user/syscall.c:81)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+0xc002b22e: dump_word (...../userprog/process.c:110)
 gcc -m32 -c ../../tests/userprog/exec-bad-ptr.c -o tests/userprog/exec-bad-ptr.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/exec-bad-ptr.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/exec-bad-ptr.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/exec-bad-ptr
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-bad-ptr -a exec-bad-ptr -- -q  -f run exec-bad-ptr < /dev/null 2> tests/userprog/exec-bad-ptr.errors > tests/userprog/exec-bad-ptr.output
 perl -I../.. ../../tests/userprog/exec-bad-ptr.ck tests/userprog/exec-bad-ptr tests/userprog/exec-bad-ptr.result
 FAIL tests/userprog/exec-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a424
+Call stack: 0xc002890f 0xc002bf8a 0x804a424
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002bf8a: get_user (...../userprog/syscall.c:112)
 In tests/userprog/exec-bad-ptr:
 0x0804a424: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -683,34 +450,12 @@ gcc -m32 -c ../../tests/userprog/wait-simple.c -o tests/userprog/wait-simple.o -
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/wait-simple.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/wait-simple
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/wait-simple -a wait-simple -p tests/userprog/child-simple -a child-simple -- -q  -f run wait-simple < /dev/null 2> tests/userprog/wait-simple.errors > tests/userprog/wait-simple.output
 perl -I../.. ../../tests/userprog/wait-simple.ck tests/userprog/wait-simple tests/userprog/wait-simple.result
-FAIL tests/userprog/wait-simple
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a434
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/wait-simple:
-0x0804a434: exec (.../../lib/user/syscall.c:81)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/wait-simple
 gcc -m32 -c ../../tests/userprog/wait-twice.c -o tests/userprog/wait-twice.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/wait-twice.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/wait-twice.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/wait-twice
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/wait-twice -a wait-twice -p tests/userprog/child-simple -a child-simple -- -q  -f run wait-twice < /dev/null 2> tests/userprog/wait-twice.errors > tests/userprog/wait-twice.output
 perl -I../.. ../../tests/userprog/wait-twice.ck tests/userprog/wait-twice tests/userprog/wait-twice.result
-FAIL tests/userprog/wait-twice
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a454
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/wait-twice:
-0x0804a454: exec (.../../lib/user/syscall.c:81)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/wait-twice
 gcc -m32 -c ../../tests/userprog/wait-killed.c -o tests/userprog/wait-killed.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/wait-killed.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/wait-killed.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/wait-killed
 gcc -m32 -c ../../tests/userprog/child-bad.c -o tests/userprog/child-bad.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/child-bad.d
@@ -719,13 +464,13 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/wait-killed -a wai
 perl -I../.. ../../tests/userprog/wait-killed.ck tests/userprog/wait-killed tests/userprog/wait-killed.result
 FAIL tests/userprog/wait-killed
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a434
+Call stack: 0xc002890f 0xc002bf8a 0x80480aa
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002bf8a: get_user (...../userprog/syscall.c:112)
 In tests/userprog/wait-killed:
-0x0804a434: exec (.../../lib/user/syscall.c:81)
+0x080480aa: test_main (...userprog/wait-killed.c:10)
 Translations of user virtual addresses above are based on a guess at
 the binary to use.  If this guess is incorrect, then those
 translations will be misleading.
@@ -738,52 +483,19 @@ gcc -m32 -c ../../tests/userprog/multi-recurse.c -o tests/userprog/multi-recurse
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/multi-recurse.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/multi-recurse
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/multi-recurse -a multi-recurse -- -q  -f run 'multi-recurse 15' < /dev/null 2> tests/userprog/multi-recurse.errors > tests/userprog/multi-recurse.output
 perl -I../.. ../../tests/userprog/multi-recurse.ck tests/userprog/multi-recurse tests/userprog/multi-recurse.result
-FAIL tests/userprog/multi-recurse
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a884
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/multi-recurse:
-0x0804a884: exec (.../../lib/user/syscall.c:81)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/multi-recurse
 gcc -m32 -c ../../tests/userprog/multi-child-fd.c -o tests/userprog/multi-child-fd.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/multi-child-fd.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/multi-child-fd.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/multi-child-fd
 gcc -m32 -c ../../tests/userprog/child-close.c -o tests/userprog/child-close.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/child-close.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/child-close.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/child-close
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/multi-child-fd -a multi-child-fd -p ../../tests/userprog/sample.txt -a sample.txt -p tests/userprog/child-close -a child-close -- -q  -f run multi-child-fd < /dev/null 2> tests/userprog/multi-child-fd.errors > tests/userprog/multi-child-fd.output
 perl -I../.. ../../tests/userprog/multi-child-fd.ck tests/userprog/multi-child-fd tests/userprog/multi-child-fd.result
-FAIL tests/userprog/multi-child-fd
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a4e4
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/multi-child-fd:
-0x0804a4e4: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/multi-child-fd
 gcc -m32 -c ../../tests/userprog/rox-simple.c -o tests/userprog/rox-simple.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/rox-simple.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/rox-simple.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/rox-simple
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/rox-simple -a rox-simple -- -q  -f run rox-simple < /dev/null 2> tests/userprog/rox-simple.errors > tests/userprog/rox-simple.output
 perl -I../.. ../../tests/userprog/rox-simple.ck tests/userprog/rox-simple tests/userprog/rox-simple.result
-FAIL tests/userprog/rox-simple
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a4e4
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/rox-simple:
-0x0804a4e4: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+pass tests/userprog/rox-simple
 gcc -m32 -c ../../tests/userprog/rox-child.c -o tests/userprog/rox-child.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/rox-child.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/rox-child.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/rox-child
 gcc -m32 -c ../../tests/userprog/child-rox.c -o tests/userprog/child-rox.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/child-rox.d
@@ -792,32 +504,24 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/rox-child -a rox-c
 perl -I../.. ../../tests/userprog/rox-child.ck tests/userprog/rox-child tests/userprog/rox-child.result
 FAIL tests/userprog/rox-child
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a5b4
+Call stack: 0xc002890f 0xc002c4ac 0x804a9d8
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/rox-child:
-0x0804a5b4: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+0xc002c4ac: close (...../userprog/syscall.c:397)
+0x0804a9d8: (unknown)
 gcc -m32 -c ../../tests/userprog/rox-multichild.c -o tests/userprog/rox-multichild.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/rox-multichild.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/rox-multichild.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/rox-multichild
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/rox-multichild -a rox-multichild -p tests/userprog/child-rox -a child-rox -- -q  -f run rox-multichild < /dev/null 2> tests/userprog/rox-multichild.errors > tests/userprog/rox-multichild.output
 perl -I../.. ../../tests/userprog/rox-multichild.ck tests/userprog/rox-multichild tests/userprog/rox-multichild.result
 FAIL tests/userprog/rox-multichild
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a5b4
+Call stack: 0xc002890f 0xc002c4ac 0x804a9d8
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/rox-multichild:
-0x0804a5b4: open (...../lib/user/syscall.c:105)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+0xc002c4ac: close (...../userprog/syscall.c:397)
+0x0804a9d8: (unknown)
 gcc -m32 -c ../../tests/userprog/bad-read.c -o tests/userprog/bad-read.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/bad-read.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/bad-read.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/bad-read
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/bad-read -a bad-read -- -q  -f run bad-read < /dev/null 2> tests/userprog/bad-read.errors > tests/userprog/bad-read.output
@@ -831,7 +535,7 @@ Acceptable output:
 Differences in `diff -u' format:
   (bad-read) begin
 - bad-read: exit(-1)
-+ bad-read: exit(0)
++ bad-read: exit(-100)
 
 (User fault messages are excluded for matching purposes.)
 gcc -m32 -c ../../tests/userprog/bad-write.c -o tests/userprog/bad-write.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/bad-write.d
@@ -847,41 +551,19 @@ Acceptable output:
 Differences in `diff -u' format:
   (bad-write) begin
 - bad-write: exit(-1)
-+ bad-write: exit(0)
++ bad-write: exit(-100)
 
 (User fault messages are excluded for matching purposes.)
 gcc -m32 -c ../../tests/userprog/bad-read2.c -o tests/userprog/bad-read2.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/bad-read2.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/bad-read2.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/bad-read2
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/bad-read2 -a bad-read2 -- -q  -f run bad-read2 < /dev/null 2> tests/userprog/bad-read2.errors > tests/userprog/bad-read2.output
 perl -I../.. ../../tests/userprog/bad-read2.ck tests/userprog/bad-read2 tests/userprog/bad-read2.result
-FAIL tests/userprog/bad-read2
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (bad-read2) begin
-  bad-read2: exit(-1)
-Differences in `diff -u' format:
-  (bad-read2) begin
-- bad-read2: exit(-1)
-+ bad-read2: exit(0)
-
-(User fault messages are excluded for matching purposes.)
+pass tests/userprog/bad-read2
 gcc -m32 -c ../../tests/userprog/bad-write2.c -o tests/userprog/bad-write2.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/bad-write2.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/bad-write2.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/bad-write2
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/bad-write2 -a bad-write2 -- -q  -f run bad-write2 < /dev/null 2> tests/userprog/bad-write2.errors > tests/userprog/bad-write2.output
 perl -I../.. ../../tests/userprog/bad-write2.ck tests/userprog/bad-write2 tests/userprog/bad-write2.result
-FAIL tests/userprog/bad-write2
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (bad-write2) begin
-  bad-write2: exit(-1)
-Differences in `diff -u' format:
-  (bad-write2) begin
-- bad-write2: exit(-1)
-+ bad-write2: exit(0)
-
-(User fault messages are excluded for matching purposes.)
+pass tests/userprog/bad-write2
 gcc -m32 -c ../../tests/userprog/bad-jump.c -o tests/userprog/bad-jump.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/bad-jump.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/bad-jump.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/bad-jump
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/bad-jump -a bad-jump -- -q  -f run bad-jump < /dev/null 2> tests/userprog/bad-jump.errors > tests/userprog/bad-jump.output
@@ -895,41 +577,20 @@ Acceptable output:
 Differences in `diff -u' format:
   (bad-jump) begin
 - bad-jump: exit(-1)
-+ bad-jump: exit(0)
++ bad-jump: exit(-100)
 
 (User fault messages are excluded for matching purposes.)
 gcc -m32 -c ../../tests/userprog/bad-jump2.c -o tests/userprog/bad-jump2.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/bad-jump2.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/bad-jump2.o tests/main.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/bad-jump2
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/bad-jump2 -a bad-jump2 -- -q  -f run bad-jump2 < /dev/null 2> tests/userprog/bad-jump2.errors > tests/userprog/bad-jump2.output
 perl -I../.. ../../tests/userprog/bad-jump2.ck tests/userprog/bad-jump2 tests/userprog/bad-jump2.result
-FAIL tests/userprog/bad-jump2
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (bad-jump2) begin
-  bad-jump2: exit(-1)
-Differences in `diff -u' format:
-  (bad-jump2) begin
-- bad-jump2: exit(-1)
-+ bad-jump2: exit(0)
-
-(User fault messages are excluded for matching purposes.)
+pass tests/userprog/bad-jump2
 gcc -m32 -c ../../tests/userprog/no-vm/multi-oom.c -o tests/userprog/no-vm/multi-oom.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/userprog/no-vm/multi-oom.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/userprog/no-vm/multi-oom.o tests/lib.o lib/user/entry.o libc.a -o tests/userprog/no-vm/multi-oom
 pintos -v -k -T 360 --qemu  --filesys-size=2 -p tests/userprog/no-vm/multi-oom -a multi-oom -- -q  -f run multi-oom < /dev/null 2> tests/userprog/no-vm/multi-oom.errors > tests/userprog/no-vm/multi-oom.output
 perl -I../.. ../../tests/userprog/no-vm/multi-oom.ck tests/userprog/no-vm/multi-oom tests/userprog/no-vm/multi-oom.result
 FAIL tests/userprog/no-vm/multi-oom
-Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804aaa4
-Translation of call stack:
-In kernel.o:
-0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/userprog/no-vm/multi-oom:
-0x0804aaa4: exec (.../../lib/user/syscall.c:81)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+run: crashed child should return -1.: FAILED
 gcc -m32 -c ../../tests/filesys/base/lg-create.c -o tests/filesys/base/lg-create.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/lg-create.d
 gcc -m32 -c ../../tests/filesys/seq-test.c -o tests/filesys/seq-test.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/seq-test.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/lg-create.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/lg-create
@@ -937,13 +598,13 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/lg-create -a l
 perl -I../.. ../../tests/filesys/base/lg-create.ck tests/filesys/base/lg-create tests/filesys/base/lg-create.result
 FAIL tests/filesys/base/lg-create
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a604
+Call stack: 0xc002890f 0xc002c4ac 0x804a668
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 In tests/filesys/base/lg-create:
-0x0804a604: open (...../lib/user/syscall.c:105)
+0x0804a668: close (...../lib/user/syscall.c:141)
 Translations of user virtual addresses above are based on a guess at
 the binary to use.  If this guess is incorrect, then those
 translations will be misleading.
@@ -953,23 +614,24 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/lg-full -a lg-
 perl -I../.. ../../tests/filesys/base/lg-full.ck tests/filesys/base/lg-full tests/filesys/base/lg-full.result
 FAIL tests/filesys/base/lg-full
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c
+Call stack: 0xc002890f 0xc002c4ac
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 gcc -m32 -c ../../tests/filesys/base/lg-random.c -o tests/filesys/base/lg-random.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/lg-random.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/lg-random.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/lg-random
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/lg-random -a lg-random -- -q  -f run lg-random < /dev/null 2> tests/filesys/base/lg-random.errors > tests/filesys/base/lg-random.output
 perl -I../.. ../../tests/filesys/base/lg-random.ck tests/filesys/base/lg-random tests/filesys/base/lg-random.result
 FAIL tests/filesys/base/lg-random
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a7b4
+Call stack: 0xc002890f 0xc002c4ac 0x804a818 0x64c196a2
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 In tests/filesys/base/lg-random:
-0x0804a7b4: open (...../lib/user/syscall.c:105)
+0x0804a818: close (...../lib/user/syscall.c:141)
+0x64c196a2: (unknown)
 Translations of user virtual addresses above are based on a guess at
 the binary to use.  If this guess is incorrect, then those
 translations will be misleading.
@@ -979,33 +641,33 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/lg-seq-block -
 perl -I../.. ../../tests/filesys/base/lg-seq-block.ck tests/filesys/base/lg-seq-block tests/filesys/base/lg-seq-block.result
 FAIL tests/filesys/base/lg-seq-block
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c
+Call stack: 0xc002890f 0xc002c4ac
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 gcc -m32 -c ../../tests/filesys/base/lg-seq-random.c -o tests/filesys/base/lg-seq-random.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/lg-seq-random.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/lg-seq-random.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/lg-seq-random
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/lg-seq-random -a lg-seq-random -- -q  -f run lg-seq-random < /dev/null 2> tests/filesys/base/lg-seq-random.errors > tests/filesys/base/lg-seq-random.output
 perl -I../.. ../../tests/filesys/base/lg-seq-random.ck tests/filesys/base/lg-seq-random tests/filesys/base/lg-seq-random.result
 FAIL tests/filesys/base/lg-seq-random
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c
+Call stack: 0xc002890f 0xc002c4ac
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 gcc -m32 -c ../../tests/filesys/base/sm-create.c -o tests/filesys/base/sm-create.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/sm-create.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/sm-create.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/sm-create
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/sm-create -a sm-create -- -q  -f run sm-create < /dev/null 2> tests/filesys/base/sm-create.errors > tests/filesys/base/sm-create.output
 perl -I../.. ../../tests/filesys/base/sm-create.ck tests/filesys/base/sm-create tests/filesys/base/sm-create.result
 FAIL tests/filesys/base/sm-create
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a604
+Call stack: 0xc002890f 0xc002c4ac 0x804a668
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 In tests/filesys/base/sm-create:
-0x0804a604: open (...../lib/user/syscall.c:105)
+0x0804a668: close (...../lib/user/syscall.c:141)
 Translations of user virtual addresses above are based on a guess at
 the binary to use.  If this guess is incorrect, then those
 translations will be misleading.
@@ -1015,23 +677,24 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/sm-full -a sm-
 perl -I../.. ../../tests/filesys/base/sm-full.ck tests/filesys/base/sm-full tests/filesys/base/sm-full.result
 FAIL tests/filesys/base/sm-full
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c
+Call stack: 0xc002890f 0xc002c4ac
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 gcc -m32 -c ../../tests/filesys/base/sm-random.c -o tests/filesys/base/sm-random.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/sm-random.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/sm-random.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/sm-random
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/sm-random -a sm-random -- -q  -f run sm-random < /dev/null 2> tests/filesys/base/sm-random.errors > tests/filesys/base/sm-random.output
 perl -I../.. ../../tests/filesys/base/sm-random.ck tests/filesys/base/sm-random tests/filesys/base/sm-random.result
 FAIL tests/filesys/base/sm-random
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a7b4
+Call stack: 0xc002890f 0xc002c4ac 0x804a818 0xb0371fec
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 In tests/filesys/base/sm-random:
-0x0804a7b4: open (...../lib/user/syscall.c:105)
+0x0804a818: close (...../lib/user/syscall.c:141)
+0xb0371fec: (unknown)
 Translations of user virtual addresses above are based on a guess at
 the binary to use.  If this guess is incorrect, then those
 translations will be misleading.
@@ -1041,20 +704,20 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/sm-seq-block -
 perl -I../.. ../../tests/filesys/base/sm-seq-block.ck tests/filesys/base/sm-seq-block tests/filesys/base/sm-seq-block.result
 FAIL tests/filesys/base/sm-seq-block
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c
+Call stack: 0xc002890f 0xc002c4ac
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 gcc -m32 -c ../../tests/filesys/base/sm-seq-random.c -o tests/filesys/base/sm-seq-random.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/sm-seq-random.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/sm-seq-random.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/sm-seq-random
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/sm-seq-random -a sm-seq-random -- -q  -f run sm-seq-random < /dev/null 2> tests/filesys/base/sm-seq-random.errors > tests/filesys/base/sm-seq-random.output
 perl -I../.. ../../tests/filesys/base/sm-seq-random.ck tests/filesys/base/sm-seq-random tests/filesys/base/sm-seq-random.result
 FAIL tests/filesys/base/sm-seq-random
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c
+Call stack: 0xc002890f 0xc002c4ac
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 gcc -m32 -c ../../tests/filesys/base/syn-read.c -o tests/filesys/base/syn-read.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/syn-read.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/syn-read.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/syn-read
 gcc -m32 -c ../../tests/filesys/base/child-syn-read.c -o tests/filesys/base/child-syn-read.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/child-syn-read.d
@@ -1063,13 +726,13 @@ pintos -v -k -T 300 --qemu  --filesys-size=2 -p tests/filesys/base/syn-read -a s
 perl -I../.. ../../tests/filesys/base/syn-read.ck tests/filesys/base/syn-read tests/filesys/base/syn-read.result
 FAIL tests/filesys/base/syn-read
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a6c4
+Call stack: 0xc002890f 0xc002c4ac 0x804a728
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 In tests/filesys/base/syn-read:
-0x0804a6c4: open (...../lib/user/syscall.c:105)
+0x0804a728: close (...../lib/user/syscall.c:141)
 Translations of user virtual addresses above are based on a guess at
 the binary to use.  If this guess is incorrect, then those
 translations will be misleading.
@@ -1079,13 +742,13 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/syn-remove -a 
 perl -I../.. ../../tests/filesys/base/syn-remove.ck tests/filesys/base/syn-remove tests/filesys/base/syn-remove.result
 FAIL tests/filesys/base/syn-remove
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a764
+Call stack: 0xc002890f 0xc002c4ac 0x804a7c8
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
+0xc002c4ac: close (...../userprog/syscall.c:397)
 In tests/filesys/base/syn-remove:
-0x0804a764: open (...../lib/user/syscall.c:105)
+0x0804a7c8: close (...../lib/user/syscall.c:141)
 Translations of user virtual addresses above are based on a guess at
 the binary to use.  If this guess is incorrect, then those
 translations will be misleading.
@@ -1097,84 +760,78 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/syn-write -a s
 perl -I../.. ../../tests/filesys/base/syn-write.ck tests/filesys/base/syn-write tests/filesys/base/syn-write.result
 FAIL tests/filesys/base/syn-write
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf3c 0x804a694 0x804b1b1 0x6e65006e
+Call stack: 0xc002890f 0xc002c4ac 0x804aad8
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf3c: get_user (...../userprog/syscall.c:112)
-In tests/filesys/base/syn-write:
-0x0804a694: exec (.../../lib/user/syscall.c:81)
-0x0804b1b1: (unknown)
-0x6e65006e: (unknown)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+0xc002c4ac: close (...../userprog/syscall.c:397)
+0x0804aad8: (unknown)
 pass tests/userprog/args-none
 pass tests/userprog/args-single
 pass tests/userprog/args-multiple
 pass tests/userprog/args-many
 pass tests/userprog/args-dbl-space
 FAIL tests/userprog/sc-bad-sp
-FAIL tests/userprog/sc-bad-arg
-FAIL tests/userprog/sc-boundary
-FAIL tests/userprog/sc-boundary-2
+pass tests/userprog/sc-bad-arg
+pass tests/userprog/sc-boundary
+pass tests/userprog/sc-boundary-2
 FAIL tests/userprog/sc-boundary-3
 pass tests/userprog/halt
-FAIL tests/userprog/exit
+pass tests/userprog/exit
 pass tests/userprog/create-normal
 pass tests/userprog/create-empty
-FAIL tests/userprog/create-null
+pass tests/userprog/create-null
 FAIL tests/userprog/create-bad-ptr
 pass tests/userprog/create-long
 pass tests/userprog/create-exists
 pass tests/userprog/create-bound
-FAIL tests/userprog/open-normal
-FAIL tests/userprog/open-missing
-FAIL tests/userprog/open-boundary
-FAIL tests/userprog/open-empty
-FAIL tests/userprog/open-null
+pass tests/userprog/open-normal
+pass tests/userprog/open-missing
+pass tests/userprog/open-boundary
+pass tests/userprog/open-empty
+pass tests/userprog/open-null
 FAIL tests/userprog/open-bad-ptr
-FAIL tests/userprog/open-twice
+pass tests/userprog/open-twice
 FAIL tests/userprog/close-normal
 FAIL tests/userprog/close-twice
 pass tests/userprog/close-stdin
 pass tests/userprog/close-stdout
 pass tests/userprog/close-bad-fd
 FAIL tests/userprog/read-normal
-FAIL tests/userprog/read-bad-ptr
-FAIL tests/userprog/read-boundary
-FAIL tests/userprog/read-zero
+pass tests/userprog/read-bad-ptr
+pass tests/userprog/read-boundary
+pass tests/userprog/read-zero
 pass tests/userprog/read-stdout
 pass tests/userprog/read-bad-fd
-FAIL tests/userprog/write-normal
+pass tests/userprog/write-normal
 FAIL tests/userprog/write-bad-ptr
-FAIL tests/userprog/write-boundary
-FAIL tests/userprog/write-zero
+pass tests/userprog/write-boundary
+pass tests/userprog/write-zero
 pass tests/userprog/write-stdin
 pass tests/userprog/write-bad-fd
-FAIL tests/userprog/exec-once
-FAIL tests/userprog/exec-arg
-FAIL tests/userprog/exec-bound
+pass tests/userprog/exec-once
+pass tests/userprog/exec-arg
+pass tests/userprog/exec-bound
 FAIL tests/userprog/exec-bound-2
 FAIL tests/userprog/exec-bound-3
-FAIL tests/userprog/exec-multiple
+pass tests/userprog/exec-multiple
 FAIL tests/userprog/exec-missing
 FAIL tests/userprog/exec-bad-ptr
-FAIL tests/userprog/wait-simple
-FAIL tests/userprog/wait-twice
+pass tests/userprog/wait-simple
+pass tests/userprog/wait-twice
 FAIL tests/userprog/wait-killed
 pass tests/userprog/wait-bad-pid
-FAIL tests/userprog/multi-recurse
-FAIL tests/userprog/multi-child-fd
-FAIL tests/userprog/rox-simple
+pass tests/userprog/multi-recurse
+pass tests/userprog/multi-child-fd
+pass tests/userprog/rox-simple
 FAIL tests/userprog/rox-child
 FAIL tests/userprog/rox-multichild
 FAIL tests/userprog/bad-read
 FAIL tests/userprog/bad-write
-FAIL tests/userprog/bad-read2
-FAIL tests/userprog/bad-write2
+pass tests/userprog/bad-read2
+pass tests/userprog/bad-write2
 FAIL tests/userprog/bad-jump
-FAIL tests/userprog/bad-jump2
+pass tests/userprog/bad-jump2
 FAIL tests/userprog/no-vm/multi-oom
 FAIL tests/filesys/base/lg-create
 FAIL tests/filesys/base/lg-full
@@ -1189,7 +846,7 @@ FAIL tests/filesys/base/sm-seq-random
 FAIL tests/filesys/base/syn-read
 FAIL tests/filesys/base/syn-remove
 FAIL tests/filesys/base/syn-write
-61 of 80 tests failed.
+32 of 80 tests failed.
 ../../tests/Make.tests:26: recipe for target 'check' failed
 make[1]: Leaving directory '/home/d1x13/Desktop/cmsc326/os/pintos2/src/userprog/build'
 ../Makefile.kernel:10: recipe for target 'check' failed

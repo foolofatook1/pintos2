@@ -263,6 +263,7 @@ process_wait (tid_t child_tid UNUSED)
 	void
 process_kill (void)
 {
+	thread_current()->process_wrapped->exit_status = -1;
 	thread_exit ();
 }
 
