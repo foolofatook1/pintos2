@@ -152,12 +152,12 @@ page_fault (struct intr_frame *f)
 	user = (f->error_code & PF_U) != 0;
 
 	/* This is an ADDITION */
-	if(!not_present)
+	/*if(!not_present)
 	{
 		thread_current()->process_wrapped->exit_status = -1;
 		process_kill ();
 		kill (f);
-	}
+	}*/
 
 	/* To implement virtual memory, delete the rest of the function
 	   body, and replace it with code that brings in the page to

@@ -18,8 +18,6 @@
 #include "devices/block.h"
 
 static void syscall_handler (struct intr_frame *);
-static int get_user(const uint8_t *uaddr);
-static bool put_user (uint8_t *udst, uint8_t byte);
 static bool valid_pointer_check(void *esp);
 static int halt (void);
 static int exit (int status);
@@ -101,38 +99,15 @@ pointer_check_range(const void *start, off_t length)
 		pointer_check(start + i);
 }
 
-/* UADDR must be below PHYS_BASE. 
-   Returns byte value if successful, -1 if segfault. */
-	static int
-get_user(const uint8_t *uaddr)
-{
-	if(!is_user_vaddr(uaddr))
-		return -1;
-	int result;
-	asm("movl $1f, %0; movzbl %1, %0; 1:"
-			: "=&a" (result) : "m" (*uaddr));
-	return result;
-}
-
-/* Writes BYTE to user address UDST. */
-	static bool
-put_user (uint8_t *udst, uint8_t byte)
-{
-	if(!is_user_vaddr(udst))
-		return false;
-	int error_code;
-	asm("movl $1f, %0; movb %b2, %1; 1:"
-			: "=&a" (error_code), "=m" (*udst) : "q" (byte));
-	return error_code != -1;
-}
-
 	static bool
 valid_pointer_check(void *esp)
 {
-	if(esp != NULL && (uint32_t)esp < (((uint32_t)PHYS_BASE) - 4)
-			&& get_user((uint8_t *)esp) != -1)
-		return 0;
-	return 1;
+	//if(esp != NULL && (uint32_t)esp < (((uint32_t)PHYS_BASE) - 4)
+	//		&& get_user((uint8_t *)esp) != -1)
+	if(esp == NULL || pagedir_get_page(thread_current()->pagedir, esp) == NULL
+		|| (uint32_t)esp > (((uint32_t)PHYS_BASE) - 4))
+		return -1;
+	return 0;
 }
 
 /* Terminates pintos by calling shutdown_power_off(). */
