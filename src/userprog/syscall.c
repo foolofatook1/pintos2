@@ -58,7 +58,7 @@ syscall_init (void)
 #define GET_ARGS1(type1, function) \
 	pointer_check(f->esp+4); \
 f->eax = function ( \
-		*((type1*) (f->esp)) \
+		*((type1*) (f->esp+4)) \
 		);
 
 #define GET_ARGS2(type1, type2, function) \
@@ -78,6 +78,7 @@ f->eax = function ( \
 		(void*) *((uint32_t*) (f->esp+8)), \
 		*((type3*) (f->esp+12)) \
 		);
+
 
 	static void
 pointer_check(void *esp)
@@ -147,22 +148,9 @@ halt (void)
 exit (int status)
 {
 	thread_current()->process_wrapped->exit_status = status;
-	process_kill ();
-	NOT_REACHED();
-}
+	thread_exit ();
 
-	static int 
-write (int fd, const void *buffer_, unsigned length)
-{
-	pointer_check_range(buffer_, length);
-	char *buffer = (char *)(buffer_);
-	if(fd == STDOUT_FILENO)
-	{
-		putbuf((char *)buffer, (size_t)length);
-		return (int)length;
-	}
-	else
-		return -1;
+	NOT_REACHED();
 }
 
 /* Runs the executable given in command line. */
@@ -193,7 +181,7 @@ exec (const char *file)
 
 	return child_tid;
 }
-
+	
 	static int 
 wait (int thread_id)
 {
@@ -248,6 +236,7 @@ open (const char *file)
 	struct file *new_file = filesys_open(file);
 	lock_release(&filesys_lock);
 
+	//printf("\n\nnew_file: %d\n\n", new_file);
 	if (new_file == NULL)
 		return -1;
 	if (strcmp(file, thread_current()->name) == 0)
@@ -263,27 +252,33 @@ open (const char *file)
 
 }
 
-	static struct file *
-get_file (int fd)
+	void 
+clean (void)
 {
-	struct list_elem *itp;
-	struct fd_list_node *ep = NULL;
+	struct list_elem *it;
+	struct list_elem *aux;
+	struct fd_list_node *rem;
 
-	for (itp = list_begin(&thread_current()->fd_table);
-			itp != list_end(&thread_current()->fd_table);
-			itp = list_next(itp))
+	for(it = list_begin(&thread_current()->fd_table);
+		it != list_end(&thread_current()->fd_table);
+		it = list_next(it))
 	{
-		ep = list_entry(itp, struct fd_list_node, elem);
-		if (ep->fd == fd)
-			return ep->file;
-	}
-	return NULL;
-}
+		rem = list_entry(it, struct fd_list_node, elem);
+		aux = it;
+		it = it->prev;
 
+		list_remove(aux);
+
+		lock_acquire(&filesys_lock);
+		file_close(rem->file);
+		lock_release(&filesys_lock);
+		free(rem);
+	}
+}
 	static size_t
 filesize (int fd)
 {
-	struct file*file = get_file(fd);
+	struct file *file = get_file(fd);
 
 	if(file == NULL)
 	{
@@ -323,6 +318,46 @@ read (int fd, void *buffer_, off_t length)
 		lock_release(&filesys_lock);
 	
 		return ret;
+	}
+}
+
+	static struct file *
+get_file (int fd)
+{
+	struct list_elem *itp;
+	struct fd_list_node *ep = NULL;
+
+	for (itp = list_begin(&thread_current()->fd_table);
+			itp != list_end(&thread_current()->fd_table);
+			itp = list_next(itp))
+	{
+		ep = list_entry(itp, struct fd_list_node, elem);
+		if (ep->fd == fd)
+			return ep->file;
+	}
+	return NULL;
+}
+
+	static int 
+write (int fd, const void *buffer_, unsigned length)
+{
+	pointer_check_range(buffer_, length);
+	char *buffer = (char *)(buffer_);
+	if(fd == STDOUT_FILENO)
+	{
+		/* write to console. */
+		putbuf((char *)buffer, (size_t)length);
+		return (int)length;
+	}
+	else
+	{	/* write to file. */
+		struct file *f = get_file(fd);
+		if(f == NULL)
+			return 0;
+		lock_acquire(&filesys_lock);
+		int result = file_write(f, buffer, length);
+		lock_release(&filesys_lock);
+		return result;
 	}
 }
 
@@ -378,13 +413,7 @@ syscall_handler (struct intr_frame *f UNUSED)
 {
 	pointer_check(f->esp);
 	int32_t sys_code = *(int*)f->esp;
-
-	if(sys_code < 0 || sys_code >= 20)
-	{
-		process_kill();
-		return;
-	}
-
+	thread_current()->f = f;
 	switch(sys_code)
 	{
 		case SYS_HALT:

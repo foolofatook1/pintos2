@@ -20,6 +20,7 @@ struct process
 	bool waited_for;
 	bool has_exited;
 	bool load_fail;
+	bool needs_deletion; /* true when parent is dead. */
 };
 
 tid_t process_execute (const char *file_name);

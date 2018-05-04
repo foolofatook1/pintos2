@@ -235,6 +235,7 @@ thread_create (const char *name, int priority,
 		new_process->waited_for = false;
 		new_process->has_exited = false;
 		new_process->load_fail = false;
+		new_process->needs_deletion = false;
 
 		list_push_back(&thread_current()->child_processes, &new_process->elem);
 		t->process_wrapped = new_process;
@@ -339,14 +340,7 @@ thread_exit ()
 {
 	ASSERT (!intr_context ());
 
-	//	struct thread *cur = thread_current();
-	//	uint32_t *pd;
-	//	pd = cur->pagedir;
-	//	printf("thread_exit pd: %" PRIu32 "\n", *pd);
 #ifdef USERPROG
-//	printf("threads exit_sema = %d\n", (int)thread_current()->exit_sema.value);
-//	sema_up(&thread_current()->exit_sema); /* Stop waiting and exit. */
-//	printf("threads exit_sema = %d\n", (int)thread_current()->exit_sema.value);
 	process_exit ();
 #endif
 
@@ -356,9 +350,6 @@ thread_exit ()
 	intr_disable ();
 	list_remove (&thread_current()->allelem);
 	thread_current ()->status = THREAD_DYING;
-
-
-
 	schedule ();
 	NOT_REACHED ();
 }

@@ -98,11 +98,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/sc-bad-sp -a sc-ba
 perl -I../.. ../../tests/userprog/sc-bad-sp.ck tests/userprog/sc-bad-sp tests/userprog/sc-bad-sp.result
 FAIL tests/userprog/sc-bad-sp
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x80480aa
+Call stack: 0xc002890f 0xc002bf3c 0x80480aa
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/sc-bad-sp:
 0x080480aa: test_main (...s/userprog/sc-bad-sp.c:19)
 Translations of user virtual addresses above are based on a guess at
@@ -157,11 +157,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/sc-boundary-3 -a s
 perl -I../.. ../../tests/userprog/sc-boundary-3.ck tests/userprog/sc-boundary-3 tests/userprog/sc-boundary-3.result
 FAIL tests/userprog/sc-boundary-3
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002c029 0x80480b1
+Call stack: 0xc002890f 0xc002c039 0x80480b1
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002c029: syscall_handler (...../userprog/syscall.c:400)
+0xc002c039: syscall_handler (...../userprog/syscall.c:413)
 In tests/userprog/sc-boundary-3:
 0x080480b1: test_main (...erprog/sc-boundary-3.c:19)
 Translations of user virtual addresses above are based on a guess at
@@ -216,11 +216,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/create-bad-ptr -a 
 perl -I../.. ../../tests/userprog/create-bad-ptr.ck tests/userprog/create-bad-ptr tests/userprog/create-bad-ptr.result
 FAIL tests/userprog/create-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a462
+Call stack: 0xc002890f 0xc002bf3c 0x804a462
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/create-bad-ptr:
 0x0804a462: create (.../../lib/user/syscall.c:93)
 Translations of user virtual addresses above are based on a guess at
@@ -247,11 +247,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-normal -a ope
 perl -I../.. ../../tests/userprog/open-normal.ck tests/userprog/open-normal tests/userprog/open-normal.result
 FAIL tests/userprog/open-normal
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a474
+Call stack: 0xc002890f 0xc002bf3c 0x804a474
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/open-normal:
 0x0804a474: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -263,11 +263,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-missing -a op
 perl -I../.. ../../tests/userprog/open-missing.ck tests/userprog/open-missing tests/userprog/open-missing.result
 FAIL tests/userprog/open-missing
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a474
+Call stack: 0xc002890f 0xc002bf3c 0x804a474
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/open-missing:
 0x0804a474: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -279,11 +279,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-boundary -a o
 perl -I../.. ../../tests/userprog/open-boundary.ck tests/userprog/open-boundary tests/userprog/open-boundary.result
 FAIL tests/userprog/open-boundary
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a534
+Call stack: 0xc002890f 0xc002bf3c 0x804a534
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/open-boundary:
 0x0804a534: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -295,11 +295,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-empty -a open
 perl -I../.. ../../tests/userprog/open-empty.ck tests/userprog/open-empty tests/userprog/open-empty.result
 FAIL tests/userprog/open-empty
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a474
+Call stack: 0xc002890f 0xc002bf3c 0x804a474
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/open-empty:
 0x0804a474: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -311,11 +311,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-null -a open-
 perl -I../.. ../../tests/userprog/open-null.ck tests/userprog/open-null tests/userprog/open-null.result
 FAIL tests/userprog/open-null
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a464
+Call stack: 0xc002890f 0xc002bf3c 0x804a464
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/open-null:
 0x0804a464: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -327,11 +327,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-bad-ptr -a op
 perl -I../.. ../../tests/userprog/open-bad-ptr.ck tests/userprog/open-bad-ptr tests/userprog/open-bad-ptr.result
 FAIL tests/userprog/open-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a474
+Call stack: 0xc002890f 0xc002bf3c 0x804a474
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/open-bad-ptr:
 0x0804a474: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -343,11 +343,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/open-twice -a open
 perl -I../.. ../../tests/userprog/open-twice.ck tests/userprog/open-twice tests/userprog/open-twice.result
 FAIL tests/userprog/open-twice
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a4d4
+Call stack: 0xc002890f 0xc002bf3c 0x804a4d4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/open-twice:
 0x0804a4d4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -359,11 +359,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/close-normal -a cl
 perl -I../.. ../../tests/userprog/close-normal.ck tests/userprog/close-normal tests/userprog/close-normal.result
 FAIL tests/userprog/close-normal
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a494
+Call stack: 0xc002890f 0xc002bf3c 0x804a494
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/close-normal:
 0x0804a494: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -375,11 +375,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/close-twice -a clo
 perl -I../.. ../../tests/userprog/close-twice.ck tests/userprog/close-twice tests/userprog/close-twice.result
 FAIL tests/userprog/close-twice
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a4a4
+Call stack: 0xc002890f 0xc002bf3c 0x804a4a4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/close-twice:
 0x0804a4a4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -406,11 +406,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/read-normal -a rea
 perl -I../.. ../../tests/userprog/read-normal.ck tests/userprog/read-normal tests/userprog/read-normal.result
 FAIL tests/userprog/read-normal
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a474
+Call stack: 0xc002890f 0xc002bf3c 0x804a474
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/read-normal:
 0x0804a474: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -422,11 +422,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/read-bad-ptr -a re
 perl -I../.. ../../tests/userprog/read-bad-ptr.ck tests/userprog/read-bad-ptr tests/userprog/read-bad-ptr.result
 FAIL tests/userprog/read-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a4a4
+Call stack: 0xc002890f 0xc002bf3c 0x804a4a4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/read-bad-ptr:
 0x0804a4a4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -438,11 +438,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/read-boundary -a r
 perl -I../.. ../../tests/userprog/read-boundary.ck tests/userprog/read-boundary tests/userprog/read-boundary.result
 FAIL tests/userprog/read-boundary
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a5b4
+Call stack: 0xc002890f 0xc002bf3c 0x804a5b4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/read-boundary:
 0x0804a5b4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -454,11 +454,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/read-zero -a read-
 perl -I../.. ../../tests/userprog/read-zero.ck tests/userprog/read-zero tests/userprog/read-zero.result
 FAIL tests/userprog/read-zero
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a4c4
+Call stack: 0xc002890f 0xc002bf3c 0x804a4c4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/read-zero:
 0x0804a4c4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -480,11 +480,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/write-normal -a wr
 perl -I../.. ../../tests/userprog/write-normal.ck tests/userprog/write-normal tests/userprog/write-normal.result
 FAIL tests/userprog/write-normal
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a4e4
+Call stack: 0xc002890f 0xc002bf3c 0x804a4e4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/write-normal:
 0x0804a4e4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -496,11 +496,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/write-bad-ptr -a w
 perl -I../.. ../../tests/userprog/write-bad-ptr.ck tests/userprog/write-bad-ptr tests/userprog/write-bad-ptr.result
 FAIL tests/userprog/write-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a4a4
+Call stack: 0xc002890f 0xc002bf3c 0x804a4a4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/write-bad-ptr:
 0x0804a4a4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -512,11 +512,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/write-boundary -a 
 perl -I../.. ../../tests/userprog/write-boundary.ck tests/userprog/write-boundary tests/userprog/write-boundary.result
 FAIL tests/userprog/write-boundary
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a564
+Call stack: 0xc002890f 0xc002bf3c 0x804a564
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/write-boundary:
 0x0804a564: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -528,11 +528,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/write-zero -a writ
 perl -I../.. ../../tests/userprog/write-zero.ck tests/userprog/write-zero tests/userprog/write-zero.result
 FAIL tests/userprog/write-zero
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a4b4
+Call stack: 0xc002890f 0xc002bf3c 0x804a4b4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/write-zero:
 0x0804a4b4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -556,11 +556,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-once -a exec-
 perl -I../.. ../../tests/userprog/exec-once.ck tests/userprog/exec-once tests/userprog/exec-once.result
 FAIL tests/userprog/exec-once
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a424
+Call stack: 0xc002890f 0xc002bf3c 0x804a424
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/exec-once:
 0x0804a424: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -573,11 +573,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-arg -a exec-a
 perl -I../.. ../../tests/userprog/exec-arg.ck tests/userprog/exec-arg tests/userprog/exec-arg.result
 FAIL tests/userprog/exec-arg
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a424
+Call stack: 0xc002890f 0xc002bf3c 0x804a424
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/exec-arg:
 0x0804a424: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -589,11 +589,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-bound -a exec
 perl -I../.. ../../tests/userprog/exec-bound.ck tests/userprog/exec-bound tests/userprog/exec-bound.result
 FAIL tests/userprog/exec-bound
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a4d4
+Call stack: 0xc002890f 0xc002bf3c 0x804a4d4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/exec-bound:
 0x0804a4d4: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -605,11 +605,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-bound-2 -a ex
 perl -I../.. ../../tests/userprog/exec-bound-2.ck tests/userprog/exec-bound-2 tests/userprog/exec-bound-2.result
 FAIL tests/userprog/exec-bound-2
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x80480ba
+Call stack: 0xc002890f 0xc002bf3c 0x80480ba
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/exec-bound-2:
 0x080480ba: test_main (...serprog/exec-bound-2.c:19)
 Translations of user virtual addresses above are based on a guess at
@@ -621,11 +621,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-bound-3 -a ex
 perl -I../.. ../../tests/userprog/exec-bound-3.ck tests/userprog/exec-bound-3 tests/userprog/exec-bound-3.result
 FAIL tests/userprog/exec-bound-3
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a4d4
+Call stack: 0xc002890f 0xc002bf3c 0x804a4d4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/exec-bound-3:
 0x0804a4d4: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -637,11 +637,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-multiple -a e
 perl -I../.. ../../tests/userprog/exec-multiple.ck tests/userprog/exec-multiple tests/userprog/exec-multiple.result
 FAIL tests/userprog/exec-multiple
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a464
+Call stack: 0xc002890f 0xc002bf3c 0x804a464
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/exec-multiple:
 0x0804a464: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -653,11 +653,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-missing -a ex
 perl -I../.. ../../tests/userprog/exec-missing.ck tests/userprog/exec-missing tests/userprog/exec-missing.result
 FAIL tests/userprog/exec-missing
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a434
+Call stack: 0xc002890f 0xc002bf3c 0x804a434
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/exec-missing:
 0x0804a434: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -669,11 +669,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/exec-bad-ptr -a ex
 perl -I../.. ../../tests/userprog/exec-bad-ptr.ck tests/userprog/exec-bad-ptr tests/userprog/exec-bad-ptr.result
 FAIL tests/userprog/exec-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a424
+Call stack: 0xc002890f 0xc002bf3c 0x804a424
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/exec-bad-ptr:
 0x0804a424: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -685,11 +685,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/wait-simple -a wai
 perl -I../.. ../../tests/userprog/wait-simple.ck tests/userprog/wait-simple tests/userprog/wait-simple.result
 FAIL tests/userprog/wait-simple
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a434
+Call stack: 0xc002890f 0xc002bf3c 0x804a434
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/wait-simple:
 0x0804a434: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -701,11 +701,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/wait-twice -a wait
 perl -I../.. ../../tests/userprog/wait-twice.ck tests/userprog/wait-twice tests/userprog/wait-twice.result
 FAIL tests/userprog/wait-twice
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a454
+Call stack: 0xc002890f 0xc002bf3c 0x804a454
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/wait-twice:
 0x0804a454: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -719,11 +719,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/wait-killed -a wai
 perl -I../.. ../../tests/userprog/wait-killed.ck tests/userprog/wait-killed tests/userprog/wait-killed.result
 FAIL tests/userprog/wait-killed
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a434
+Call stack: 0xc002890f 0xc002bf3c 0x804a434
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/wait-killed:
 0x0804a434: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -740,11 +740,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/multi-recurse -a m
 perl -I../.. ../../tests/userprog/multi-recurse.ck tests/userprog/multi-recurse tests/userprog/multi-recurse.result
 FAIL tests/userprog/multi-recurse
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a884
+Call stack: 0xc002890f 0xc002bf3c 0x804a884
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/multi-recurse:
 0x0804a884: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -758,11 +758,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/multi-child-fd -a 
 perl -I../.. ../../tests/userprog/multi-child-fd.ck tests/userprog/multi-child-fd tests/userprog/multi-child-fd.result
 FAIL tests/userprog/multi-child-fd
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a4e4
+Call stack: 0xc002890f 0xc002bf3c 0x804a4e4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/multi-child-fd:
 0x0804a4e4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -774,11 +774,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/rox-simple -a rox-
 perl -I../.. ../../tests/userprog/rox-simple.ck tests/userprog/rox-simple tests/userprog/rox-simple.result
 FAIL tests/userprog/rox-simple
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a4e4
+Call stack: 0xc002890f 0xc002bf3c 0x804a4e4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/rox-simple:
 0x0804a4e4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -792,11 +792,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/rox-child -a rox-c
 perl -I../.. ../../tests/userprog/rox-child.ck tests/userprog/rox-child tests/userprog/rox-child.result
 FAIL tests/userprog/rox-child
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a5b4
+Call stack: 0xc002890f 0xc002bf3c 0x804a5b4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/rox-child:
 0x0804a5b4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -808,11 +808,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/userprog/rox-multichild -a 
 perl -I../.. ../../tests/userprog/rox-multichild.ck tests/userprog/rox-multichild tests/userprog/rox-multichild.result
 FAIL tests/userprog/rox-multichild
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a5b4
+Call stack: 0xc002890f 0xc002bf3c 0x804a5b4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/rox-multichild:
 0x0804a5b4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -920,11 +920,11 @@ pintos -v -k -T 360 --qemu  --filesys-size=2 -p tests/userprog/no-vm/multi-oom -
 perl -I../.. ../../tests/userprog/no-vm/multi-oom.ck tests/userprog/no-vm/multi-oom tests/userprog/no-vm/multi-oom.result
 FAIL tests/userprog/no-vm/multi-oom
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804aaa4
+Call stack: 0xc002890f 0xc002bf3c 0x804aaa4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/userprog/no-vm/multi-oom:
 0x0804aaa4: exec (.../../lib/user/syscall.c:81)
 Translations of user virtual addresses above are based on a guess at
@@ -937,11 +937,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/lg-create -a l
 perl -I../.. ../../tests/filesys/base/lg-create.ck tests/filesys/base/lg-create tests/filesys/base/lg-create.result
 FAIL tests/filesys/base/lg-create
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a604
+Call stack: 0xc002890f 0xc002bf3c 0x804a604
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/filesys/base/lg-create:
 0x0804a604: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -953,21 +953,21 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/lg-full -a lg-
 perl -I../.. ../../tests/filesys/base/lg-full.ck tests/filesys/base/lg-full tests/filesys/base/lg-full.result
 FAIL tests/filesys/base/lg-full
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c
+Call stack: 0xc002890f 0xc002bf3c
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 gcc -m32 -c ../../tests/filesys/base/lg-random.c -o tests/filesys/base/lg-random.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/lg-random.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/lg-random.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/lg-random
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/lg-random -a lg-random -- -q  -f run lg-random < /dev/null 2> tests/filesys/base/lg-random.errors > tests/filesys/base/lg-random.output
 perl -I../.. ../../tests/filesys/base/lg-random.ck tests/filesys/base/lg-random tests/filesys/base/lg-random.result
 FAIL tests/filesys/base/lg-random
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a7b4
+Call stack: 0xc002890f 0xc002bf3c 0x804a7b4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/filesys/base/lg-random:
 0x0804a7b4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -979,31 +979,31 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/lg-seq-block -
 perl -I../.. ../../tests/filesys/base/lg-seq-block.ck tests/filesys/base/lg-seq-block tests/filesys/base/lg-seq-block.result
 FAIL tests/filesys/base/lg-seq-block
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c
+Call stack: 0xc002890f 0xc002bf3c
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 gcc -m32 -c ../../tests/filesys/base/lg-seq-random.c -o tests/filesys/base/lg-seq-random.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/lg-seq-random.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/lg-seq-random.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/lg-seq-random
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/lg-seq-random -a lg-seq-random -- -q  -f run lg-seq-random < /dev/null 2> tests/filesys/base/lg-seq-random.errors > tests/filesys/base/lg-seq-random.output
 perl -I../.. ../../tests/filesys/base/lg-seq-random.ck tests/filesys/base/lg-seq-random tests/filesys/base/lg-seq-random.result
 FAIL tests/filesys/base/lg-seq-random
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c
+Call stack: 0xc002890f 0xc002bf3c
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 gcc -m32 -c ../../tests/filesys/base/sm-create.c -o tests/filesys/base/sm-create.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/sm-create.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/sm-create.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/sm-create
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/sm-create -a sm-create -- -q  -f run sm-create < /dev/null 2> tests/filesys/base/sm-create.errors > tests/filesys/base/sm-create.output
 perl -I../.. ../../tests/filesys/base/sm-create.ck tests/filesys/base/sm-create tests/filesys/base/sm-create.result
 FAIL tests/filesys/base/sm-create
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a604
+Call stack: 0xc002890f 0xc002bf3c 0x804a604
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/filesys/base/sm-create:
 0x0804a604: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -1015,21 +1015,21 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/sm-full -a sm-
 perl -I../.. ../../tests/filesys/base/sm-full.ck tests/filesys/base/sm-full tests/filesys/base/sm-full.result
 FAIL tests/filesys/base/sm-full
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c
+Call stack: 0xc002890f 0xc002bf3c
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 gcc -m32 -c ../../tests/filesys/base/sm-random.c -o tests/filesys/base/sm-random.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/sm-random.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/sm-random.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/sm-random
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/sm-random -a sm-random -- -q  -f run sm-random < /dev/null 2> tests/filesys/base/sm-random.errors > tests/filesys/base/sm-random.output
 perl -I../.. ../../tests/filesys/base/sm-random.ck tests/filesys/base/sm-random tests/filesys/base/sm-random.result
 FAIL tests/filesys/base/sm-random
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a7b4
+Call stack: 0xc002890f 0xc002bf3c 0x804a7b4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/filesys/base/sm-random:
 0x0804a7b4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -1041,20 +1041,20 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/sm-seq-block -
 perl -I../.. ../../tests/filesys/base/sm-seq-block.ck tests/filesys/base/sm-seq-block tests/filesys/base/sm-seq-block.result
 FAIL tests/filesys/base/sm-seq-block
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c
+Call stack: 0xc002890f 0xc002bf3c
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 gcc -m32 -c ../../tests/filesys/base/sm-seq-random.c -o tests/filesys/base/sm-seq-random.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/sm-seq-random.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/sm-seq-random.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/sm-seq-random
 pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/sm-seq-random -a sm-seq-random -- -q  -f run sm-seq-random < /dev/null 2> tests/filesys/base/sm-seq-random.errors > tests/filesys/base/sm-seq-random.output
 perl -I../.. ../../tests/filesys/base/sm-seq-random.ck tests/filesys/base/sm-seq-random tests/filesys/base/sm-seq-random.result
 FAIL tests/filesys/base/sm-seq-random
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c
+Call stack: 0xc002890f 0xc002bf3c
 Translation of call stack:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 gcc -m32 -c ../../tests/filesys/base/syn-read.c -o tests/filesys/base/syn-read.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/syn-read.d
 gcc -m32  -Wl,--build-id=none -nostdlib -static -Wl,-T,../../lib/user/user.lds tests/filesys/base/syn-read.o tests/lib.o tests/filesys/seq-test.o tests/main.o lib/user/entry.o libc.a -o tests/filesys/base/syn-read
 gcc -m32 -c ../../tests/filesys/base/child-syn-read.c -o tests/filesys/base/child-syn-read.o -g -msoft-float -O -march=i686 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/user -I. -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/filesys/base/child-syn-read.d
@@ -1063,11 +1063,11 @@ pintos -v -k -T 300 --qemu  --filesys-size=2 -p tests/filesys/base/syn-read -a s
 perl -I../.. ../../tests/filesys/base/syn-read.ck tests/filesys/base/syn-read tests/filesys/base/syn-read.result
 FAIL tests/filesys/base/syn-read
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a6c4
+Call stack: 0xc002890f 0xc002bf3c 0x804a6c4
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/filesys/base/syn-read:
 0x0804a6c4: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -1079,11 +1079,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/syn-remove -a 
 perl -I../.. ../../tests/filesys/base/syn-remove.ck tests/filesys/base/syn-remove tests/filesys/base/syn-remove.result
 FAIL tests/filesys/base/syn-remove
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a764
+Call stack: 0xc002890f 0xc002bf3c 0x804a764
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/filesys/base/syn-remove:
 0x0804a764: open (...../lib/user/syscall.c:105)
 Translations of user virtual addresses above are based on a guess at
@@ -1097,11 +1097,11 @@ pintos -v -k -T 60 --qemu  --filesys-size=2 -p tests/filesys/base/syn-write -a s
 perl -I../.. ../../tests/filesys/base/syn-write.ck tests/filesys/base/syn-write tests/filesys/base/syn-write.result
 FAIL tests/filesys/base/syn-write
 Kernel panic in run: PANIC at ../../userprog/exception.c:103 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc002890f 0xc002bf2c 0x804a694 0x804b1b1 0x6e65006e
+Call stack: 0xc002890f 0xc002bf3c 0x804a694 0x804b1b1 0x6e65006e
 Translation of call stack:
 In kernel.o:
 0xc002890f: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf2c: get_user (...../userprog/syscall.c:122)
+0xc002bf3c: get_user (...../userprog/syscall.c:112)
 In tests/filesys/base/syn-write:
 0x0804a694: exec (.../../lib/user/syscall.c:81)
 0x0804b1b1: (unknown)
@@ -1193,14 +1193,3 @@ FAIL tests/filesys/base/syn-write
 ../../tests/Make.tests:26: recipe for target 'check' failed
 make[1]: Leaving directory '/home/d1x13/Desktop/cmsc326/os/pintos2/src/userprog/build'
 ../Makefile.kernel:10: recipe for target 'check' failed
-
-FAILS
-_____
-FAIL tests/userprog/open-normal
-FAIL tests/userprog/open-boundary
-FAIL tests/userprog/open-null
-FAIL tests/userprog/open-twice
-FAIL tests/userprog/close-normal
-FAIL tests/userprog/close-twice
-FAIL tests/userprog/write-zero
-

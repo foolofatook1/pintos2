@@ -115,6 +115,8 @@ struct thread
 	int exit_status;
 #endif
 
+	struct intr_frame *f;
+
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
   };

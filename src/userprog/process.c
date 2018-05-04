@@ -7,6 +7,7 @@
 #include <string.h>
 #include "userprog/gdt.h"
 #include "userprog/pagedir.h"
+#include "userprog/syscall.h"
 #include "userprog/tss.h"
 #include "filesys/directory.h"
 #include "filesys/file.h"
@@ -26,6 +27,37 @@ static bool load (const char *cmdline, void (**eip) (void), void **esp);
 
 void get_args(char *cmd_string, char **argv, int *argc);
 
+static void free_children(struct thread *cur);
+
+static void
+free_children(struct thread *cur)
+{
+	enum intr_level old_level = intr_disable();
+
+	struct list_elem *it;
+	struct list_elem *aux;
+	for(it = list_begin(&cur->child_processes);
+		it != list_end(&cur->child_processes);
+		it = list_next(it))
+	{
+		struct process *pr = list_entry(it, struct process, elem);
+
+		aux = it;
+		it = it->prev;
+		list_remove(aux);
+		if (pr->has_exited)
+			free(pr);
+		else
+			pr->needs_deletion = true;
+	}
+	if(cur->tid >= 2)
+	{
+		if(cur->process_wrapped->needs_deletion)
+			free(cur->process_wrapped);
+	}
+	intr_set_level(old_level);
+}
+
 /* Starts a new thread running a user program loaded from
    FILENAME.  The new thread may be scheduled (and may even exit)
    before process_execute() returns.  Returns the new process's
@@ -43,8 +75,18 @@ process_execute (const char *file_name)
 		return TID_ERROR;
 	strlcpy (fn_copy, file_name, PGSIZE);
 
+	char first_arg[24];//MAX_ARG_SIZE];
+	int i;
+	for(i = 0; i < 24/*MAX_ARG_SIZE*/; ++i)
+	{
+		first_arg[i] = file_name[i];
+		if(file_name[i] == ' ')
+			break;
+	}
+	first_arg[i] = '\0';
+
 	/* Create a new thread to execute FILE_NAME. */
-	tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
+	tid = thread_create (first_arg/*file_name*/, PRI_DEFAULT, start_process, fn_copy);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy); 
 	return tid;
@@ -208,10 +250,6 @@ process_wait (tid_t child_tid UNUSED)
 		return -1;
 
 	
-//	if(pr->exit_status != -100)
-//		return pr->exit_status;
-
-
 	pr->waited_for = true;
 
 	sema_down(&pr->exit_sema);
@@ -225,20 +263,9 @@ process_wait (tid_t child_tid UNUSED)
 	void
 process_kill (void)
 {
-	thread_current()->exit_status = 0;
 	thread_exit ();
 }
 
-/*static void
-free_child_processes(struct thread *cur)
-{
-	enum intr_level old_level = intr_disable();
-
-	struct list_elem *it;
-	struct list_elem *aux;
-	for(it = list_begin(cur->child_processes);
-		it != list_end(cur->child_processes);
-		it = list_next(it))*/
 
 /* Free the current process's resources. */
 	void
@@ -248,24 +275,19 @@ process_exit (void)
 	uint32_t *pd;
 
 	char *name = cur->name;
-	for(int i = 0; i < strlen(name); ++i)
-	{
-		if(name[i] == ' ')
-			name[i] = '\0';
-	}
 	if(cur->tid >= 2)
 	{
-		printf("%s: exit(%d)\n", name, cur->exit_status);
+		printf("%s: exit(%d)\n", name, cur->process_wrapped->exit_status);
+		cur->process_wrapped->has_exited = true;
 		sema_up(&thread_current()->process_wrapped->exit_sema);
 	}
 	
-	//free_child_processes(cur);
+	free_children(cur);
 	/* Destroy the current process's page directory and switch back
 	   to the kernel-only page directory. */
 	pd = cur->pagedir;
 	if (pd != NULL) 
 	{
-		//printf("pd: %" PRIu32 "\n", *pd);
 		/* Correct ordering here is crucial.  We must set
 		   cur->pagedir to NULL before switching page directories,
 		   so that a timer interrupt can't switch back to the
@@ -277,6 +299,7 @@ process_exit (void)
 		pagedir_activate (NULL);
 		pagedir_destroy (pd);
 	}
+	clean();
 }
 
 /* Sets up the CPU for running user code in the current
