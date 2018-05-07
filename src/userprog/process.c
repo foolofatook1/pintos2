@@ -29,6 +29,7 @@ void get_args(char *cmd_string, char **argv, int *argc);
 
 static void free_children(struct thread *cur);
 
+/* Frees the list of the child processes of the current process. */
 static void
 free_children(struct thread *cur)
 {
@@ -99,6 +100,7 @@ stack_push(uint32_t *arg, void *esp_)
 	*esp = arg;
 }
 
+/* Characters are pushed to the stack in reversed order. */
 	static char *
 dump_word(char *word, char *first_pos)
 {
@@ -112,6 +114,8 @@ dump_word(char *word, char *first_pos)
 	return first_pos;
 }
 
+/* Receives the number of arguments and pointers to each of the strings and
+   pushes them all to the stack. */
 	static void
 push_args_on_stack(struct intr_frame * intr_frame, int argc, char ** argv)
 {
