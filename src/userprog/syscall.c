@@ -16,8 +16,8 @@
 #include "userprog/pagedir.h"
 #include "devices/block.h"
 
+/* System calls. */
 static void syscall_handler (struct intr_frame *);
-static bool valid_pointer_check(void *esp);
 static int halt (void);
 static int exit (int status);
 static int exec (const char *file);
@@ -25,8 +25,6 @@ static int wait (int thread_id);
 static bool create (const char *file, unsigned initial_size);
 static bool remove(const char *file);
 static int open (const char *file);
-static void pointer_check(void *esp);
-static void pointer_check_range(const void *start, off_t length);
 static size_t filesize (int fd);
 static size_t read (int fd, void *buffer_, off_t length);
 static int write (int fd, const void *buffer, unsigned length);
@@ -34,8 +32,14 @@ static int seek (int fd, unsigned position);
 static unsigned tell (int fd);
 static int close (int fd);
 
+/* Helper functions. */
 static struct file *get_file(int fd);
-
+static void pointer_check(void *esp);
+static void pointer_check_range(const void *start, off_t length);
+static int allocate_fd (void);
+static struct file *get_file (int fd);
+void clean (void);
+/* Lock for the file system. */
 static struct lock filesys_lock;
 
 struct fd_list_node
@@ -52,37 +56,58 @@ syscall_init (void)
 	lock_init (&filesys_lock);
 }
 
+/* Parses arguments for the stack. */
 #define GET_ARGS1(type1, function) \
 	pointer_check(f->esp+4); \
-	f->eax = function ( \
+f->eax = function ( \
 		*((type1*) (f->esp+4)) \
 		);
 
 #define GET_ARGS2(type1, type2, function) \
 	pointer_check(f->esp+4); \
-	pointer_check(f->esp+8); \
-	f->eax = function ( \
+pointer_check(f->esp+8); \
+f->eax = function ( \
 		*((type1*) (f->esp+4)), \
 		*((type2*) (f->esp+8)) \
 		);
 
 #define GET_ARGS3(type1, type2, type3, function) \
 	pointer_check(f->esp+4); \
-	pointer_check(f->esp+8); \
-	pointer_check(f->esp+12); \
-	f->eax = function ( \
+pointer_check(f->esp+8); \
+pointer_check(f->esp+12); \
+f->eax = function ( \
 		*((type1*)(f->esp+4)), \
 		(void*) *((uint32_t*) (f->esp+8)), \
 		*((type3*) (f->esp+12)) \
 		);
 
+/* Helper Functions. */
+/* Retrieves the file associated with given descriptor. */
+	static struct file *
+get_file (int fd)
+{
+	struct list_elem *itp;
+	struct fd_list_node *ep = NULL;
 
+	for (itp = list_begin(&thread_current()->fd_table);
+			itp != list_end(&thread_current()->fd_table);
+			itp = list_next(itp))
+	{
+		ep = list_entry(itp, struct fd_list_node, elem);
+		if (ep->fd == fd)
+			return ep->file;
+	}
+	return NULL;
+}
+
+/* Checks if the pointer is valid. */
 	static void
 pointer_check(void *esp)
 {
 	if(esp == NULL || pagedir_get_page(thread_current()->pagedir, esp) == NULL
-		|| (uint32_t)esp > (((uint32_t)PHYS_BASE) - 4))
+			|| (uint32_t)esp > (((uint32_t)PHYS_BASE) - 4))
 	{
+		/* Calls thread_exit() and exit_sets status to -1. */
 		process_kill();
 		return;
 	}
@@ -99,15 +124,50 @@ pointer_check_range(const void *start, off_t length)
 		pointer_check(start + i);
 }
 
-	static bool
-valid_pointer_check(void *esp)
+/* Allocates a unique file descriptor for the given file. */
+	static int
+allocate_fd (void)
 {
-	if(esp == NULL || pagedir_get_page(thread_current()->pagedir, esp) == NULL
-		|| (uint32_t)esp > (((uint32_t)PHYS_BASE) - 4))
-		return -1;
-	return 0;
+	static struct lock fd_lock;
+	lock_init(&fd_lock);
+
+	static int next_fd = 2;
+	int fd;
+
+	lock_acquire (&fd_lock);
+	fd = next_fd++;
+	lock_release (&fd_lock);
+
+	return fd;
 }
 
+/* Cleans out the fd_table and closes the file. */
+	void 
+clean (void)
+{
+	struct list_elem *it;
+	struct list_elem *aux;
+	struct fd_list_node *rem;
+
+	for(it = list_begin(&thread_current()->fd_table);
+			it != list_end(&thread_current()->fd_table);
+			it = list_next(it))
+	{
+		rem = list_entry(it, struct fd_list_node, elem);
+		aux = it;
+		it = it->prev;
+
+		list_remove(aux);
+
+		lock_acquire(&filesys_lock);
+		file_close(rem->file);
+		lock_release(&filesys_lock);
+		free(rem);
+	}
+}
+
+
+/* System Calls. */
 /* Terminates pintos by calling shutdown_power_off(). */
 	static int 
 halt (void)
@@ -116,6 +176,8 @@ halt (void)
 	NOT_REACHED();
 }
 
+/* Exits current user program, and sends the exit status to the kernel. 
+   If the process's parent waits for it this status is returned. */
 	static int
 exit (int status)
 {
@@ -153,13 +215,16 @@ exec (const char *file)
 
 	return child_tid;
 }
-	
+
+/* Waits for a child process pid and get child's exit status. */
 	static int 
 wait (int thread_id)
 {
 	return process_wait(thread_id);
 }
 
+/* Creates new file. Creating new file does not open it! 
+   That is done in open syscall. */
 	static bool
 create (const char *file, unsigned initial_size)
 {
@@ -172,6 +237,7 @@ create (const char *file, unsigned initial_size)
 	return ret;
 }
 
+/* Deletes the given file. Can be removed if it is open or closed. */
 	static bool
 remove(const char *file)
 {
@@ -184,21 +250,8 @@ remove(const char *file)
 	return true;
 }
 
-	int
-allocate_fd (void)
-{
-	static struct lock fd_lock;
-	lock_init(&fd_lock);
 
-	static int next_fd = 2;
-	int fd;
-
-	lock_acquire (&fd_lock);
-	fd = next_fd++;
-	lock_release (&fd_lock);
-
-	return fd;
-}
+/* Opens given file. */
 	static int
 open (const char *file)
 {
@@ -223,30 +276,8 @@ open (const char *file)
 
 }
 
-	/* Cleans out the fd_table and closes the file. */
-	void 
-clean (void)
-{
-	struct list_elem *it;
-	struct list_elem *aux;
-	struct fd_list_node *rem;
 
-	for(it = list_begin(&thread_current()->fd_table);
-		it != list_end(&thread_current()->fd_table);
-		it = list_next(it))
-	{
-		rem = list_entry(it, struct fd_list_node, elem);
-		aux = it;
-		it = it->prev;
-
-		list_remove(aux);
-
-		lock_acquire(&filesys_lock);
-		file_close(rem->file);
-		lock_release(&filesys_lock);
-		free(rem);
-	}
-}
+/* Returns the size in bytes of the file open as fd. */
 	static size_t
 filesize (int fd)
 {
@@ -264,6 +295,8 @@ filesize (int fd)
 	return ret;
 }
 
+/* Reads size bytes from the file open as fd into buffer.
+   Returns the number of bytes actually read. */
 	static size_t
 read (int fd, void *buffer_, off_t length)
 {
@@ -288,28 +321,14 @@ read (int fd, void *buffer_, off_t length)
 		lock_acquire(&filesys_lock);
 		off_t ret = file_read(f, buffer, length);
 		lock_release(&filesys_lock);
-	
+
 		return ret;
 	}
 }
 
-	static struct file *
-get_file (int fd)
-{
-	struct list_elem *itp;
-	struct fd_list_node *ep = NULL;
-
-	for (itp = list_begin(&thread_current()->fd_table);
-			itp != list_end(&thread_current()->fd_table);
-			itp = list_next(itp))
-	{
-		ep = list_entry(itp, struct fd_list_node, elem);
-		if (ep->fd == fd)
-			return ep->file;
-	}
-	return NULL;
-}
-
+	
+/* Writes size bytes from buffer to the open file. 
+   Returns the number of bytes written. */
 	static int 
 write (int fd, const void *buffer_, unsigned length)
 {
@@ -333,6 +352,8 @@ write (int fd, const void *buffer_, unsigned length)
 	}
 }
 
+/* Changes the next byte to be read or written in open file
+   to position from the beginning of the new file (in bytes). */
 	static int 
 seek (int fd, unsigned position)
 {
@@ -345,6 +366,8 @@ seek (int fd, unsigned position)
 	return 0;
 }
 
+/* Returns the position of the next byte to be read or written 
+   in open file. (in bytes) */
 	static unsigned
 tell (int fd)
 {
@@ -352,16 +375,17 @@ tell (int fd)
 
 	if(f == NULL)
 		return -1;
-	
+
 	return f->pos;
 }
 
+/* Closes the file identified by a fd. */
 	static int
 close (int fd)
 {
 	struct list_elem *itp;
 	struct fd_list_node *ep = NULL;
-	
+
 	for (itp = list_begin(&thread_current()->fd_table);
 			itp != list_end(&thread_current()->fd_table);
 			itp = list_next(itp))
