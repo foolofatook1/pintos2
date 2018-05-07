@@ -75,9 +75,9 @@ process_execute (const char *file_name)
 		return TID_ERROR;
 	strlcpy (fn_copy, file_name, PGSIZE);
 
-	char first_arg[24];//MAX_ARG_SIZE];
+	char first_arg[24];
 	int i;
-	for(i = 0; i < 24/*MAX_ARG_SIZE*/; ++i)
+	for(i = 0; i < 24; ++i)
 	{
 		first_arg[i] = file_name[i];
 		if(file_name[i] == ' ')
@@ -86,7 +86,7 @@ process_execute (const char *file_name)
 	first_arg[i] = '\0';
 
 	/* Create a new thread to execute FILE_NAME. */
-	tid = thread_create (first_arg/*file_name*/, PRI_DEFAULT, start_process, fn_copy);
+	tid = thread_create (first_arg, PRI_DEFAULT, start_process, fn_copy);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy); 
 	return tid;
@@ -115,10 +115,10 @@ dump_word(char *word, char *first_pos)
 	static void
 push_args_on_stack(struct intr_frame * intr_frame, int argc, char ** argv)
 {
-  uint32_t * ptrs[argc]; // Pointers to the first character of an argument
+  uint32_t * ptrs[argc]; 
   int i;
 
-  /* (1) This will iterate through the list of arguments and push them onto the
+  /* This will iterate through the list of arguments and push them onto the
          stack (keeps track of number of arguments) */
   char * word_pointer = (char*) intr_frame->esp;
   for (i = argc-1; i >= 0; i--) {
@@ -126,32 +126,32 @@ push_args_on_stack(struct intr_frame * intr_frame, int argc, char ** argv)
     ptrs[i] = (uint32_t *) word_pointer;
   }
 
-  // (2) Then it aligns the memory (word align)
+  /* Then it aligns the memory (word align) */
   while ((unsigned) word_pointer % 4 != 0) {
     word_pointer --;
   }
 
   intr_frame->esp = word_pointer;
 
-  // (3) Then it will push a null pointer onto the stack
+  /* Then it will push a null pointer onto the stack */
   intr_frame->esp -= 4;
   stack_push(0, intr_frame->esp);
 
-  // (4) then it will push the pointers to the arguments on the stack
+  /* Then it will push the pointers to the arguments on the stack */
   for (i=argc-1; i>=0; i--) {
     intr_frame->esp -= 4;
     stack_push(ptrs[i], intr_frame->esp);
   }
 
-  // (5) Then it pushes argv (the pointer to the array of pointers to args)
+  /* Then it pushes argv (the pointer to the array of pointers to args) */
   intr_frame->esp -=4;
   stack_push(intr_frame->esp+4, intr_frame->esp);
 
-  // (6) then it will push the number of arguments onto the stack (argc)
+  /* Then it will push the number of arguments onto the stack (argc) */
   intr_frame->esp -= 4;
   stack_push((uint32_t*) argc, intr_frame->esp);
 
-  // (7) Push a fake return address (0) onto the stack
+  /* Push a fake return address (0) onto the stack */
   intr_frame->esp -= 4;
   stack_push(0, intr_frame->esp);
 }
@@ -253,9 +253,6 @@ process_wait (tid_t child_tid UNUSED)
 	pr->waited_for = true;
 
 	sema_down(&pr->exit_sema);
-//	list_remove(it);
-//	int result = pr->exit_status;
-//	palloc_free_page(pr);
 	return pr->exit_status;
 }
 
@@ -649,7 +646,7 @@ setup_stack (void **esp, char **argv, int argc)
 			{
 				*esp -= (strlen(argv[i])+1);
 				arr[i] = (uint32_t *)*esp;
-				memcpy(*esp, argv[i],strlen(argv[i])+1); //memcpy before
+				memcpy(*esp, argv[i],strlen(argv[i])+1); 
 			}
 
 			while((unsigned int)(*esp) % plen != 0)
@@ -671,8 +668,6 @@ setup_stack (void **esp, char **argv, int argc)
 			*(int *)*esp = argc;
 			*esp -= plen;
 			(*(int *)(*esp)) = 0;
-
-			//hex_dump((uintptr_t)*esp, *esp, (int)(PHYS_BASE-*esp), true);
 		}
 		else
 			palloc_free_page (kpage);
