@@ -231,7 +231,7 @@ thread_create (const char *name, int priority,
 
 		sema_init(&new_process->exit_sema,0);
 		sema_init(&new_process->load_sema,0);
-		new_process->exit_status = -100;
+		new_process->exit_status = -1;
 		new_process->waited_for = false;
 		new_process->has_exited = false;
 		new_process->load_fail = false;

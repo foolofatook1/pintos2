@@ -80,7 +80,8 @@ syscall_init (void)
 	static void
 pointer_check(void *esp)
 {
-	if(valid_pointer_check(esp))
+	if(esp == NULL || pagedir_get_page(thread_current()->pagedir, esp) == NULL
+		|| (uint32_t)esp > (((uint32_t)PHYS_BASE) - 4))
 	{
 		process_kill();
 		return;
@@ -101,8 +102,6 @@ pointer_check_range(const void *start, off_t length)
 	static bool
 valid_pointer_check(void *esp)
 {
-	//if(esp != NULL && (uint32_t)esp < (((uint32_t)PHYS_BASE) - 4)
-	//		&& get_user((uint8_t *)esp) != -1)
 	if(esp == NULL || pagedir_get_page(thread_current()->pagedir, esp) == NULL
 		|| (uint32_t)esp > (((uint32_t)PHYS_BASE) - 4))
 		return -1;
@@ -113,7 +112,6 @@ valid_pointer_check(void *esp)
 	static int 
 halt (void)
 {
-	//printf("\n\nGOODBYE!\n\n");
 	shutdown_power_off();
 	NOT_REACHED();
 }
@@ -210,13 +208,12 @@ open (const char *file)
 	struct file *new_file = filesys_open(file);
 	lock_release(&filesys_lock);
 
-	//printf("\n\nnew_file: %d\n\n", new_file);
 	if (new_file == NULL)
 		return -1;
 	if (strcmp(file, thread_current()->name) == 0)
 		file_deny_write(new_file);
 
-	/* this should all be one method. */
+	/* find the file. */
 	struct fd_list_node *new_fd = (struct fd_list_node *) 
 		malloc(sizeof(struct fd_list_node));
 	new_fd->fd = allocate_fd();
@@ -226,6 +223,7 @@ open (const char *file)
 
 }
 
+	/* Cleans out the fd_table and closes the file. */
 	void 
 clean (void)
 {
