@@ -119,7 +119,7 @@ halt (void)
 	static int
 exit (int status)
 {
-	thread_current()->process_wrapped->exit_status = status;
+	thread_current()->the_process->exit_status = status;
 	thread_exit ();
 
 	NOT_REACHED();

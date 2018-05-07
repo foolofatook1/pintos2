@@ -107,7 +107,7 @@ struct thread
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
 
-	struct process *process_wrapped;	/* Don't even ask. */
+	struct process *the_process;	/* Don't even ask. */
 	struct list child_processes; 		/* The list of child processes. */
 	struct list fd_table;				/* List of file descriptors. */
 

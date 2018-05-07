@@ -154,7 +154,7 @@ page_fault (struct intr_frame *f)
 	/* This is an ADDITION */
 	/*if(!not_present)
 	{
-		thread_current()->process_wrapped->exit_status = -1;
+		thread_current()->the_process->exit_status = -1;
 		process_kill ();
 		kill (f);
 	}*/

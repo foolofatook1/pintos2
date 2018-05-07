@@ -238,7 +238,7 @@ thread_create (const char *name, int priority,
 		new_process->needs_deletion = false;
 
 		list_push_back(&thread_current()->child_processes, &new_process->elem);
-		t->process_wrapped = new_process;
+		t->the_process = new_process;
 	}
 
 	/* Stack frame for kernel_thread(). */

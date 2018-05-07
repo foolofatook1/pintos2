@@ -52,8 +52,8 @@ free_children(struct thread *cur)
 	}
 	if(cur->tid >= 2)
 	{
-		if(cur->process_wrapped->needs_deletion)
-			free(cur->process_wrapped);
+		if(cur->the_process->needs_deletion)
+			free(cur->the_process);
 	}
 	intr_set_level(old_level);
 }
@@ -200,8 +200,8 @@ start_process (void *file_name_)
 	if (thread_current()->tid >= 3)
 	{
 		if(!success)
-			thread_current()->process_wrapped->load_fail = true;
-		sema_up(&thread_current()->process_wrapped->load_sema);
+			thread_current()->the_process->load_fail = true;
+		sema_up(&thread_current()->the_process->load_sema);
 	}
 	
 	push_args_on_stack(&if_, argc, argv);
@@ -260,7 +260,7 @@ process_wait (tid_t child_tid UNUSED)
 	void
 process_kill (void)
 {
-	thread_current()->process_wrapped->exit_status = -1;
+	thread_current()->the_process->exit_status = -1;
 	thread_exit ();
 }
 
@@ -275,9 +275,9 @@ process_exit (void)
 	char *name = cur->name;
 	if(cur->tid >= 2)
 	{
-		printf("%s: exit(%d)\n", name, cur->process_wrapped->exit_status);
-		cur->process_wrapped->has_exited = true;
-		sema_up(&thread_current()->process_wrapped->exit_sema);
+		printf("%s: exit(%d)\n", name, cur->the_process->exit_status);
+		cur->the_process->has_exited = true;
+		sema_up(&thread_current()->the_process->exit_sema);
 	}
 	
 	free_children(cur);
